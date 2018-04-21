@@ -88,8 +88,16 @@ public class Enemy : TurnTaker, Killable
 
         if (MapUnit.CurrentTile == playerTile)
         {
-            soundAttack.Play();
-            player.Die();
+            if (player.Inventory.RemoveItem(ItemType.Stake, 1))
+            {
+                // this enemy dies!
+                Die();
+            }
+            else
+            {
+                soundAttack.Play();
+                player.Die();
+            }
         }
     }
 
@@ -112,6 +120,8 @@ public class Enemy : TurnTaker, Killable
     public void Die()
     {
         dead = true;
+
+        // TODO change "visual" states
     }
 
     public bool isDead()
