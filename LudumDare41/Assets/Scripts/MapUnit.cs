@@ -1,15 +1,33 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MapUnit
 {
-    public MapTile CurrentTile { get; set; }
+    private MapTile currentTile;
+    public MapTile CurrentTile 
+    { 
+        get
+        {
+            return currentTile;
+        }
+
+        set 
+        {
+            currentTile = value;
+
+            if (currentTile.onArriveAtTile != null)
+            {
+                currentTile.onArriveAtTile(this);
+            }
+        } 
+    }
+
+    public Killable Killable { get; private set; }
     private Map map;
 
     // Use this for initialization
-    public MapUnit(Vector3 position)
+    public MapUnit(Vector3 position, Killable killable)
     {
+        Killable = killable;
         map = GameObject.FindObjectOfType<Map>();
         CurrentTile = map.GetMapTileNearest(position);
     }

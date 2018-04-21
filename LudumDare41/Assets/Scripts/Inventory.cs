@@ -15,4 +15,12 @@ public class Inventory
     {
         Items = new Dictionary<ItemType, int>();
     }
+
+    public void AddItem(ItemType itemType, int qty)
+    {
+        int owned = 0;
+        Items.TryGetValue(itemType, out owned);
+        owned += qty;
+        Items[itemType] = owned;
+    }
 }

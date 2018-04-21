@@ -23,7 +23,7 @@ public class Enemy : TurnTaker, Killable
         player = FindObjectOfType<Player>();
 
         currentCountdown = turnCountdown;
-        MapUnit = new MapUnit(transform.position);
+        MapUnit = new MapUnit(transform.position, this);
     }
 
     public override bool TurnComplete()
