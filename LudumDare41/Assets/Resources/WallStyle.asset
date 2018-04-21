@@ -11,6 +11,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f5aaeaad88b32048a455298b1968571, type: 3}
   m_Name: WallStyle
   m_EditorClassIdentifier: 
-  wall: {fileID: 0}
-  leftPiece: {fileID: 0}
-  rightPiece: {fileID: 0}
+  wall: {fileID: 21300000, guid: 9cb528cb8f50d8343bdfe0adad3ed999, type: 3}
+  leftPiece: {fileID: 21300000, guid: d026e8bfe353abb448572ab18dde5a44, type: 3}
+  rightPiece: {fileID: 21300000, guid: 4911eaccd718a3c45916a309054eba62, type: 3}
