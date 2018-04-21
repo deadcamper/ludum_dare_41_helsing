@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class Player : TurnTaker
+public class Player : TurnTaker, Killable
 {
     public MapUnit MapUnit { get; private set; }
+
     private bool turnComplete = false;
+
+    private bool dead = false;
 
     private void Start()
     {
@@ -22,6 +25,12 @@ public class Player : TurnTaker
         turnComplete = false;
         while (nextNode == null)
         {
+            if (isDead())
+            {
+                yield return null;
+                continue; //Hack to prevent turn completion
+            }
+
             if (Input.GetKeyUp(KeyCode.W))
             {
                 // up
@@ -60,5 +69,15 @@ public class Player : TurnTaker
     public override bool TurnComplete()
     {
         return turnComplete;
+    }
+
+    public void Die()
+    {
+        dead = true;
+    }
+
+    public bool isDead()
+    {
+        return dead;
     }
 }
