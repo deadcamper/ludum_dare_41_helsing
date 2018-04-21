@@ -1,0 +1,1 @@
+draw_sprite_stretched(spr_lightoverlay,3,0,0,display_get_gui_width(),display_get_gui_height())
