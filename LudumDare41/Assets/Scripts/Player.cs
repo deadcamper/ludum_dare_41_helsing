@@ -22,6 +22,11 @@ public class Player : TurnTaker, Killable
     private void Update()
     {
         Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, transform.position + (Vector3.back * 20), 0.1f);
+
+        if (MapUnit.CurrentTile != null)
+        {
+            transform.position = Vector3.Lerp(transform.position, MapUnit.CurrentTile.transform.position, 0.3f);
+        }
     }
 
     public override IEnumerator TurnLogic()
@@ -60,10 +65,13 @@ public class Player : TurnTaker, Killable
                 nextNode = MapUnit.CurrentTile.GetNeighbor(Vector3.right);
             }
 
+            // TEMP
+            if (Input.GetKeyUp(KeyCode.Space))
+                Inventory.RemoveItem(ItemType.Key, 1);
+
             if (nextNode != null)
             {
                 MapUnit.CurrentTile = nextNode;
-                transform.position = MapUnit.CurrentTile.transform.position;
             }
 
             yield return null;
