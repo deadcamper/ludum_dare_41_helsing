@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Player : TurnTaker, Killable
 {
+    public Game game;
+
     public MapUnit MapUnit { get; private set; }
 
     private bool turnComplete = false;
@@ -30,7 +32,7 @@ public class Player : TurnTaker, Killable
         turnComplete = false;
         while (nextNode == null)
         {
-            if (isDead())
+            if (isDead() || game.IsPaused())
             {
                 yield return null;
                 continue; //Hack to prevent turn completion
