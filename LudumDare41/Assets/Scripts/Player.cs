@@ -65,18 +65,49 @@ public class Player : TurnTaker, Killable
                 nextNode = MapUnit.CurrentTile.GetNeighbor(Vector3.right);
             }
 
-            // TEMP
-            if (Input.GetKeyUp(KeyCode.Space))
-                Inventory.RemoveItem(ItemType.Key, 1);
-
             if (nextNode != null)
             {
-                MapUnit.CurrentTile = nextNode;
+                if (nextNode.isValid)
+                    MapUnit.CurrentTile = nextNode;
+                else
+                {
+                    if (AttemptUseKey(nextNode))
+                    {
+                        // used a key! (door is now marked as valid)
+                        MapUnit.CurrentTile = nextNode;
+                    }
+                    else
+                    {
+                        nextNode = null;
+                    }
+                }
             }
 
             yield return null;
         }
         turnComplete = true;
+    }
+
+    private bool AttemptUseKey(MapTile nextNode)
+    {
+        if (nextNode == null)
+            return false;
+
+        if (nextNode.isValid == true)
+            return false;
+
+        switch(nextNode.tileType)
+        {
+            case TileType.Door: // TODO as we add more "door" types / "key" types, we gotta account for that here d
+                if (Inventory.RemoveItem(ItemType.Key, 1))
+                {
+                    nextNode.isValid = true;
+                    return true;
+                }
+                break;
+        }
+
+        return false;
     }
 
     public override bool TurnComplete()

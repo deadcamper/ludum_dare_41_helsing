@@ -1,11 +1,12 @@
 fileFormatVersion: 2
 guid: 027a75e1d50e64d9692c84be02e708f2
-timeCreated: 1524306558
+timeCreated: 1524349224
 licenseType: Pro
 TextureImporter:
   fileIDToRecycleName:
     21300000: dungeon_spritesheet_wall_01
     21300002: dungeon_spritesheet_floor_01
+    21300004: dungeon_spritesheet_door_01
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -104,7 +105,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -114,6 +115,19 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 160
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: dungeon_spritesheet_door_01
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 96
         width: 32
         height: 32
       alignment: 0

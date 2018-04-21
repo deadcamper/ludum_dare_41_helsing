@@ -14,7 +14,7 @@ public class CollectibleItem : MonoBehaviour
         mapTile.onArriveAtTile += OnPlayerArriveAtTile;
     }
 
-    private void OnPlayerArriveAtTile(MapUnit mapUnit)
+    private void OnPlayerArriveAtTile(MapTile mapTile, MapUnit mapUnit)
     {
         // is this unit actually the player?
         Player player = FindObjectOfType<Player>();

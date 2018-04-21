@@ -1,12 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
 public enum TileType
 {
     Floor,
-    Wall
+    Wall,
+    Door,
+    Exit
 }
 
 public class MapTile : MonoBehaviour
@@ -14,8 +15,8 @@ public class MapTile : MonoBehaviour
     public static int TILE_SIZE = 32;
     public static bool TilesAreNeighbors(MapTile tileA, MapTile tileB) 
     {
-        // are they both floors?
-        if (tileA.tileType == tileB.tileType && tileB.tileType == TileType.Floor)
+        // are they both not walls?
+        if (tileA.tileType != TileType.Wall && tileB.tileType != TileType.Wall)
         {
             // get distance between the 2
             float diffX = tileA.transform.position.x - tileB.transform.position.x;
@@ -27,10 +28,11 @@ public class MapTile : MonoBehaviour
         return false;
     }
 
-    public delegate void OnArriveAtTile(MapUnit mapUnit);
+    public delegate void OnArriveAtTile(MapTile mapTile, MapUnit mapUnit);
     public OnArriveAtTile onArriveAtTile;
 
     public TileType tileType;
+    public bool isValid;
     public List<MapTile> Neighbors { get; private set; }
     public void AddNeighbor(MapTile tile)
     {

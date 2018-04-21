@@ -67,6 +67,9 @@ public class Enemy : TurnTaker, Killable
 
         foreach (MapTile mapTile in MapUnit.CurrentTile.Neighbors)
         {
+            if (!mapTile.isValid)
+                continue; // don't consider it if it's not valid
+
             float score = CalculateMapTileScore(mapTile);
             if (score < currentMapTileScore)
             {
