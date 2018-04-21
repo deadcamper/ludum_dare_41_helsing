@@ -23,7 +23,7 @@ public class Map : MonoBehaviour
 
 	public void AddMapTile(MapTile mapTile)
 	{
-		mapTiles.Add(mapTile.Coordinates, mapTile);
+		mapTiles[mapTile.Coordinates] = mapTile;
 	}
 
 	public MapTile GetMapTile(Vector2Int coordinates)

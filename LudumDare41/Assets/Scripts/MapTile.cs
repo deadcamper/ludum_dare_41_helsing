@@ -9,7 +9,7 @@ public enum TileType
     Door,
     Exit
 }
-[RequireComponent(typeof(MapTileEditor))]
+[ExecuteInEditMode]
 public class MapTile : MonoBehaviour
 {
     public static int TILE_SIZE = 32;
@@ -35,7 +35,7 @@ public class MapTile : MonoBehaviour
 				}
 			}
 			_generatedDecorationsParent.SetParent(transform, false);
-			//_generatedDecorationsParent.gameObject.hideFlags = HideFlags.HideAndDontSave;
+			_generatedDecorationsParent.gameObject.hideFlags = HideFlags.HideAndDontSave;
 			return _generatedDecorationsParent;
 		}
 	}
@@ -154,4 +154,18 @@ public class MapTile : MonoBehaviour
 
         return null;
     }
+
+	private void Update()
+	{
+#if UNITY_EDITOR
+		if (Application.isPlaying)
+			return;
+
+		RegenerateDecorations(Map.Instance);
+
+		int modX = Mathf.RoundToInt(transform.position.x / 32);
+		int modY = Mathf.RoundToInt(transform.position.y / 32);
+		transform.position = new Vector3(modX * 32, modY * 32);
+#endif
+	}
 }
