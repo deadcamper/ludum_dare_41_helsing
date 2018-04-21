@@ -1,8 +1,47 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public class Map : MonoBehaviour
 {
     private static float light_radius = 130.0f;
+
+	private static Map _instance;
+	public static Map Instance
+	{
+		get
+		{
+			if (_instance == null)
+			{
+				_instance = FindObjectOfType<Map>();
+			}
+			return _instance;
+		}
+	}
+
+	private Dictionary<Vector2Int, MapTile> mapTiles = new Dictionary<Vector2Int, MapTile>();
+
+	public void AddMapTile(MapTile mapTile)
+	{
+		mapTiles.Add(mapTile.Coordinates, mapTile);
+	}
+
+	public MapTile GetMapTile(Vector2Int coordinates)
+	{
+		if (!Application.isPlaying)
+		{
+			return FindObjectsOfType<MapTile>().FirstOrDefault(t => t.Coordinates == coordinates);
+		}
+
+
+
+		MapTile mapTile;
+		if (mapTiles.TryGetValue(coordinates, out mapTile))
+		{
+			return mapTile;
+		}
+		return null;
+	}
 
     // Use this for initialization
     void Awake()
