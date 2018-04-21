@@ -95,7 +95,6 @@ public class Enemy : TurnTaker, Killable
         float score = 0;
 
         // how close is this tile to the player?
-        //Player player = FindObjectOfType<Player>();
         score += Vector3.Distance(player.transform.position, mapTile.transform.position);
 
         // consider is this backtracking?

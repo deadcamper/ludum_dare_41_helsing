@@ -12,7 +12,6 @@ public enum TileType
 public class MapTile : MonoBehaviour
 {
     public static int TILE_SIZE = 32;
-
     public static bool TilesAreNeighbors(MapTile tileA, MapTile tileB) 
     {
         // are they both floors?
@@ -28,8 +27,10 @@ public class MapTile : MonoBehaviour
         return false;
     }
 
-    public TileType tileType;
+    public delegate void OnArriveAtTile(MapUnit mapUnit);
+    public OnArriveAtTile onArriveAtTile;
 
+    public TileType tileType;
     public List<MapTile> Neighbors { get; private set; }
     public void AddNeighbor(MapTile tile)
     {
