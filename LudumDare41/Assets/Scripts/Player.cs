@@ -13,6 +13,10 @@ public class Player : TurnTaker, Killable
     private void Start()
     {
         MapUnit = new MapUnit(transform.position);
+        Inventory = new Inventory();
+        Inventory.Items.Add(ItemType.Stake, 1);
+        Inventory.Items.Add(ItemType.SilverBullet, 6);
+        Inventory.Items.Add(ItemType.Key, 0);
     }
 
     private void Update()
