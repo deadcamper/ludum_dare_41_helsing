@@ -1,12 +1,9 @@
 ﻿<Properties StartupConfiguration="{A8A30DD4-31DC-9A41-F887-4774CD76B9E9}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/HUD.cs">
     <Files>
-      <File FileName="Assets/Scripts/Enemy.cs" Line="62" Column="36" />
-      <File FileName="Assets/Scripts/MapTile.cs" Line="84" Column="6" />
-      <File FileName="Assets/Scripts/MapTileEditor.cs" Line="11" Column="20" />
-      <File FileName="Assets/Scripts/Glow.cs" Line="12" Column="18" />
-      <File FileName="Assets/Scripts/Flame.cs" Line="7" Column="42" />
-      <File FileName="Assets/Scripts/TurnTaker.cs" Line="7" Column="41" />
+      <File FileName="Assets/Scripts/Player.cs" Line="8" Column="53" />
+      <File FileName="Assets/Scripts/Inventory.cs" Line="17" Column="6" />
+      <File FileName="Assets/Scripts/HUD.cs" Line="14" Column="37" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

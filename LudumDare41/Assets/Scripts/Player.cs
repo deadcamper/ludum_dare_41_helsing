@@ -5,6 +5,7 @@ public class Player : TurnTaker
 {
     public MapUnit MapUnit { get; private set; }
     private bool turnComplete = false;
+    public Inventory Inventory { get; private set; }
 
     private void Start()
     {
