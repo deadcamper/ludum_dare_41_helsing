@@ -13,7 +13,7 @@ public class LevelExit : MonoBehaviour
 
     private IEnumerator Delay()
     {
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(6.0f);
         SceneManager.LoadScene(nextScene);
     }
 }

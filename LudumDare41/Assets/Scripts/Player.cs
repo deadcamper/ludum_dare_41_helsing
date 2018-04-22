@@ -203,6 +203,7 @@ public class Player : TurnTaker, Killable
                     else
                     {
                         nextNode = null;
+                        PlayClip("locked");
                         GameUI.DisplayMessage("You don't have a key.");
                     }
                 }
