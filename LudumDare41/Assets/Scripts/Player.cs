@@ -68,7 +68,7 @@ public class Player : TurnTaker, Killable
         gunArmSprite.SetActive(Inventory.Items.Any(kvp => kvp.Key == ItemType.SilverBullet && kvp.Value > 0));
     }
 
-    public void PlayClip(string name)
+    public void PlayClip(string name, bool isPlayingOverride = false)
     {
         foreach (AudioLibraryEntry entry in audioLibrary)
         {
