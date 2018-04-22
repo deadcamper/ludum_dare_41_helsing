@@ -125,7 +125,7 @@ public class Player : TurnTaker, Killable
 
             if (lastFrameCount != Time.frameCount)
             {
-                if (Input.GetKeyUp(KeyCode.W))
+                if (Input.GetKeyDown(KeyCode.W))
                 {
                     // up
                     if (direction == Direction.Up)
@@ -133,11 +133,11 @@ public class Player : TurnTaker, Killable
                     else
                     {
                         direction = Direction.Up;
-                        turnComplete = true;
+                        //turnComplete = true;
                     }
                 }
 
-                if (Input.GetKeyUp(KeyCode.S))
+                if (Input.GetKeyDown(KeyCode.S))
                 {
                     // down
                     if (direction == Direction.Down)
@@ -145,11 +145,11 @@ public class Player : TurnTaker, Killable
                     else
                     {
                         direction = Direction.Down;
-                        turnComplete = true;
+                        //turnComplete = true;
                     }
                 }
 
-                if (Input.GetKeyUp(KeyCode.A))
+                if (Input.GetKeyDown(KeyCode.A))
                 {
                     // left
                     if (direction == Direction.Left)
@@ -157,11 +157,11 @@ public class Player : TurnTaker, Killable
                     else
                     {
                         direction = Direction.Left;
-                        turnComplete = true;
+                        //turnComplete = true;
                     }
                 }
 
-                if (Input.GetKeyUp(KeyCode.D))
+                if (Input.GetKeyDown(KeyCode.D))
                 {
                     // right
                     if (direction == Direction.Right)
@@ -169,11 +169,11 @@ public class Player : TurnTaker, Killable
                     else
                     {
                         direction = Direction.Right;
-                        turnComplete = true;
+                        //turnComplete = true;
                     }
                 }
 
-                if (Input.GetKeyUp(KeyCode.Space))
+                if (Input.GetKeyDown(KeyCode.Space))
                 {
                     if (AttemptFireGun())
                     {
