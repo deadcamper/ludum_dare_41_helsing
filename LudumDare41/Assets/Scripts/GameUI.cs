@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class GameUI : MonoBehaviour
 {
@@ -6,6 +8,8 @@ public class GameUI : MonoBehaviour
 
     public GameObject gameOverScreen;
     public GameObject gamePausedScreen;
+    public GameObject inGameMessage;
+    public Text inGameMessageText;
 
     public enum UIState
     {
@@ -31,6 +35,25 @@ public class GameUI : MonoBehaviour
             UpdateState(nextState);
         }
 	}
+
+    public static void DisplayMessage(string message)
+    {
+        GameUI gameUI = FindObjectOfType<GameUI>();
+        gameUI.inGameMessageText.text = message;
+        gameUI.inGameMessage.SetActive(true);
+        gameUI.HideInGameMessage();
+    }
+
+    public void HideInGameMessage()
+    {
+        StartCoroutine(DelayAndHide());
+    }
+
+    private IEnumerator DelayAndHide()
+    {
+        yield return new WaitForSeconds(2.0f);
+        inGameMessage.SetActive(false);
+    }
 
     public void UpdateState(UIState newState)
     {
