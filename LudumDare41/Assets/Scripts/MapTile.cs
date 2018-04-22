@@ -157,42 +157,56 @@ public class MapTile : MonoBehaviour
 
     public MapTile GetNeighbor(Vector3 offset)
     {
+        if (offset == Vector3.up)
+        {
+            return GetNeighbor(Direction.Up);
+        }
+        if (offset == Vector3.down)
+        {
+            return GetNeighbor(Direction.Down);
+        }
+        if (offset == Vector3.left)
+        {
+            return GetNeighbor(Direction.Left);
+        }
+        if (offset == Vector3.right)
+        {
+            return GetNeighbor(Direction.Right);
+        }
+
+        return null;
+    }
+
+    public MapTile GetNeighbor(Direction direction)
+    {
         foreach (MapTile neighbor in Neighbors)
         {
-            // up
-            if (offset == Vector3.up)
+            switch (direction)
             {
-                if (neighbor.transform.position.y > transform.position.y)
-                {
-                    return neighbor;
-                }
-            }
-
-            // down
-            if (offset == Vector3.down)
-            {
-                if (neighbor.transform.position.y < transform.position.y)
-                {
-                    return neighbor;
-                }
-            }
-
-            // up
-            if (offset == Vector3.left)
-            {
-                if (neighbor.transform.position.x < transform.position.x)
-                {
-                    return neighbor;
-                }
-            }
-
-            // down
-            if (offset == Vector3.right)
-            {
-                if (neighbor.transform.position.x > transform.position.x)
-                {
-                    return neighbor;
-                }
+                case Direction.Up:
+                    if (neighbor.transform.position.y > transform.position.y)
+                    {
+                        return neighbor;
+                    }
+                    break;
+                case Direction.Down:
+                    if (neighbor.transform.position.y < transform.position.y)
+                    {
+                        return neighbor;
+                    }
+                    break;
+                case Direction.Left:
+                    if (neighbor.transform.position.x < transform.position.x)
+                    {
+                        return neighbor;
+                    }
+                    break;
+                case Direction.Right:
+                    if (neighbor.transform.position.x > transform.position.x)
+                    {
+                        return neighbor;
+                    }
+                    break;
             }
         }
 

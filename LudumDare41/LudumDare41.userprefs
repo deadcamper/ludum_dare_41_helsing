@@ -1,9 +1,8 @@
 ﻿<Properties StartupConfiguration="{A8A30DD4-31DC-9A41-F887-4774CD76B9E9}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/LevelExit.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Player.cs">
     <Files>
-      <File FileName="Assets/Scripts/LevelExit.cs" Line="11" Column="31" />
-      <File FileName="Assets/Scripts/MapTile.cs" Line="145" Column="23" />
-      <File FileName="Assets/Scripts/MapUnit.cs" Line="22" Column="54" />
+      <File FileName="Assets/Scripts/GunUtil.cs" Line="44" Column="10" />
+      <File FileName="Assets/Scripts/Player.cs" Line="171" Column="17" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

@@ -9,6 +9,7 @@ public class Player : TurnTaker, Killable
 	public GameObject deadSprite;
 	public GameObject gunArmSprite;
 	public GameObject stakeArmSprite;
+    public MuzzleFlash muzzleFlash;
 
     private int lastFrameCount = 0;
 
@@ -63,18 +64,22 @@ public class Player : TurnTaker, Killable
         }
     }
 
-    public void PlayClip(string name)
+    public void PlayClip(string name, bool isPlayingOverride = false)
     {
         foreach (AudioLibraryEntry entry in audioLibrary)
         {
             if (entry.name.Equals(name))
             {
-                if (!entry.audioSource.isPlaying)
+                if (!entry.audioSource.isPlaying || isPlayingOverride)
                 {
                     // pitch shift for variations
                     if (name.Equals("walk"))
                     {
                         entry.audioSource.pitch = 1.0f + Random.value;
+                    }
+                    if (name.Equals("gun"))
+                    {
+                        entry.audioSource.pitch = 1.0f - (Random.value * 0.2f);
                     }
 
                     entry.audioSource.Play();
@@ -167,7 +172,10 @@ public class Player : TurnTaker, Killable
                 if (Input.GetKeyUp(KeyCode.Space))
                 {
                     if (AttemptFireGun())
+                    {
+                        GunUtil.KillEnemiesInSight(this);
                         turnComplete = true;
+                    }
                 }
             }
             lastFrameCount = Time.frameCount;
@@ -202,6 +210,13 @@ public class Player : TurnTaker, Killable
 
     private bool AttemptFireGun()
     {
+        if (Inventory.RemoveItem(ItemType.SilverBullet, 1))
+        {
+            muzzleFlash.Fire();
+            PlayClip("gun", true);
+            return true;
+        }
+
         return false;
     }
 
