@@ -55,7 +55,9 @@ public class MapTile : MonoBehaviour
 				{
 					if (Application.isPlaying)
 					{
-						_generatedDecorationsParent = Instantiate( new GameObject("GeneratedDecorationsParent")).transform;
+						GameObject temp = new GameObject("GeneratedDecorationsParent");
+						_generatedDecorationsParent = Instantiate(temp).transform;
+						Destroy(temp);
 					}
 					else
 					{
