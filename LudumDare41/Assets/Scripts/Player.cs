@@ -24,6 +24,11 @@ public class Player : TurnTaker, Killable
     private void Update()
     {
         Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, transform.position + (Vector3.back * 20), 0.1f);
+
+        if (MapUnit.CurrentTile != null)
+        {
+            transform.position = Vector3.Lerp(transform.position, MapUnit.CurrentTile.transform.position, 0.3f);
+        }
     }
 
     public override IEnumerator TurnLogic()
@@ -64,13 +69,47 @@ public class Player : TurnTaker, Killable
 
             if (nextNode != null)
             {
-                MapUnit.CurrentTile = nextNode;
-                transform.position = MapUnit.CurrentTile.transform.position;
+                if (nextNode.isValid)
+                    MapUnit.CurrentTile = nextNode;
+                else
+                {
+                    if (AttemptUseKey(nextNode))
+                    {
+                        // used a key! (door is now marked as valid)
+                        MapUnit.CurrentTile = nextNode;
+                    }
+                    else
+                    {
+                        nextNode = null;
+                    }
+                }
             }
 
             yield return null;
         }
         turnComplete = true;
+    }
+
+    private bool AttemptUseKey(MapTile nextNode)
+    {
+        if (nextNode == null)
+            return false;
+
+        if (nextNode.isValid == true)
+            return false;
+
+        switch(nextNode.tileType)
+        {
+            case TileType.Door: // TODO as we add more "door" types / "key" types, we gotta account for that here d
+                if (Inventory.RemoveItem(ItemType.Key, 1))
+                {
+                    nextNode.isValid = true;
+                    return true;
+                }
+                break;
+        }
+
+        return false;
     }
 
     public override bool TurnComplete()

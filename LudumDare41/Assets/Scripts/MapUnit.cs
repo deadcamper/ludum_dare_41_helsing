@@ -16,7 +16,7 @@ public class MapUnit
 
             if (currentTile.onArriveAtTile != null)
             {
-                currentTile.onArriveAtTile(this);
+                currentTile.onArriveAtTile(value, this);
             }
         } 
     }

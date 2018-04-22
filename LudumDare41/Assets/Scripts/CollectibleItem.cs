@@ -14,14 +14,17 @@ public class CollectibleItem : MonoBehaviour
         mapTile.onArriveAtTile += OnPlayerArriveAtTile;
     }
 
-    private void OnPlayerArriveAtTile(MapUnit mapUnit)
+    private void OnPlayerArriveAtTile(MapTile mapTile, MapUnit mapUnit)
     {
         // is this unit actually the player?
         Player player = FindObjectOfType<Player>();
-        if (Vector3.Distance(player.transform.position, transform.position) < 15.0f)
+        float dist = Vector3.Distance(player.transform.position, transform.position);
+        if (dist < 40.0f) // why 40? because 32 won't work because the player isn't actually there yet until next frame
         {
-            Destroy(this);
+            Destroy(gameObject);
             player.Inventory.AddItem(itemType, qty);
         }
+
+        mapTile.onArriveAtTile -= OnPlayerArriveAtTile;
     }
 }
