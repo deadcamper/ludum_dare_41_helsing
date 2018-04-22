@@ -43,11 +43,13 @@ public class GameUI : MonoBehaviour
         if (newState == UIState.PAUSED)
         {
             gamePausedScreen.SetActive(true);
+            gameOverScreen.SetActive(false);
             currentState = UIState.PAUSED;
         }
         else if (newState == UIState.PLAYING)
         {
             gamePausedScreen.SetActive(false);
+            gameOverScreen.SetActive(false);
             currentState = UIState.PLAYING;
         }
         else if (newState == UIState.GAMEOVER)
