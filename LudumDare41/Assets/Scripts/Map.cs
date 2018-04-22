@@ -75,13 +75,13 @@ public class Map : MonoBehaviour
 
     private void OnArrivedAtExit(MapTile mapTile, MapUnit mapUnit)
     {
-        // remove this so it doesn't keep happening
-        mapTile.onArriveAtTile -= OnArrivedAtExit;
-
         // is this unit actually the player?
         Player player = FindObjectOfType<Player>();
-        if (player.MapUnit.CurrentTile == mapTile)
+        if (mapUnit == player.MapUnit)
         {
+            // remove this so it doesn't keep happening
+            mapTile.onArriveAtTile -= OnArrivedAtExit;
+
             // Win the game!
             Debug.Log("Win the game!");
             player.PlayClip("win");

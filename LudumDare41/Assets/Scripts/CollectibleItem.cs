@@ -22,15 +22,12 @@ public class CollectibleItem : MonoBehaviour
     {
         // is this unit actually the player?
         Player player = FindObjectOfType<Player>();
-        float dist = Vector3.Distance(player.transform.position, transform.position);
-        if (dist < 40.0f) // why 40? because 32 won't work because the player isn't actually there yet until next frame
+        if (mapUnit == player.MapUnit)
         {
             Destroy(gameObject);
             player.Inventory.AddItem(itemType, qty);
+            mapTile.onArriveAtTile -= OnPlayerArriveAtTile;
+            OnCollect.Invoke();
         }
-
-        mapTile.onArriveAtTile -= OnPlayerArriveAtTile;
-
-        OnCollect.Invoke();
     }
 }
