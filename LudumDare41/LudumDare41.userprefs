@@ -1,9 +1,9 @@
 ﻿<Properties StartupConfiguration="{A8A30DD4-31DC-9A41-F887-4774CD76B9E9}|">
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Player.cs">
     <Files>
-      <File FileName="Assets/Scripts/Player.cs" Line="66" Column="1" />
+      <File FileName="Assets/Scripts/Player.cs" Line="204" Column="29" />
       <File FileName="Assets/Scripts/Map.cs" Line="47" Column="17" />
-      <File FileName="Assets/Scripts/Enemy.cs" Line="117" Column="22" />
+      <File FileName="Assets/Scripts/Enemy.cs" Line="10" Column="34" />
       <File FileName="Assets/Scripts/Direction.cs" Line="7" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>

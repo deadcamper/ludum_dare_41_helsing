@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Enemy : TurnTaker, Killable
 {
-    public AudioSource soundAttack;
-
     private int backtrackHistorySize = 4;
     public int turnCountdown;
     public int tileCount = 1;
@@ -98,7 +96,6 @@ public class Enemy : TurnTaker, Killable
             }
             else
             {
-                soundAttack.Play();
                 player.Die();
             }
         }
