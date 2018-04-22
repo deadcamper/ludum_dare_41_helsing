@@ -77,7 +77,7 @@ public class Player : TurnTaker, Killable
 
     private void UpdatePlayerSpritesWithInventory(ItemType t, int q)
     {
-        stakeArmSprite.SetActive(Inventory.Items.Any(kvp => kvp.Key == ItemType.Stake && kvp.Value > 0));
+        stakeArmSprite.SetActive(Inventory.HasItem(ItemType.MetalStake) || Inventory.HasItem(ItemType.Stake));
         gunArmSprite.SetActive(Inventory.Items.Any(kvp => kvp.Key == ItemType.SilverBullet && kvp.Value > 0));
     }
 
@@ -232,6 +232,13 @@ public class Player : TurnTaker, Killable
                 {
                     PlayClip("door");
                     nextNode.isValid = true;
+                    
+                    nextNode.RegenerateDecorations(Map.Instance);
+                    foreach (MapTile neighbor in nextNode.GetNeighbors(false))
+                    {
+                        neighbor.RegenerateDecorations(Map.Instance);
+                    }
+
                     return true;
                 }
                 break;

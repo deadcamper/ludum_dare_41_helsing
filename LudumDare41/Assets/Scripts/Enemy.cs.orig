@@ -20,13 +20,15 @@ public class Enemy : TurnTaker, Killable
 	public GameObject liveSprite;
 	public GameObject deadSprite;
 
+	[Tooltip("if turningTakesATurn 1 is optimal, otherwise 0 is optimal")]
 	[Range(0,10)]
-    public int turnsToTurn = 0;
+	public int adversionToTurns = 0;
 
 
 	public Direction startingDirection;
 
 	public bool ignoresWalls = false;
+	public bool turningTakesATurn = false;
 
 	private Direction direction;
     private Player player;
@@ -73,7 +75,7 @@ public class Enemy : TurnTaker, Killable
 
         if (currentPathTarget != null)
         {
-            transform.position = Vector3.Lerp(transform.position, currentPathTarget, 0.8f);
+            transform.position = Vector3.Lerp(transform.position, currentPathTarget, 0.2f);
             transform.rotation = Quaternion.Euler(0, 0, Mathf.LerpAngle(transform.rotation.eulerAngles.z, DirectionUtil.GetSpriteRotationForDirection(direction).eulerAngles.z, 0.6f));
         }
     }
@@ -81,7 +83,7 @@ public class Enemy : TurnTaker, Killable
     private bool AtCurrentPathTarget()
     {
         if (currentPathTarget != null)
-            return Vector3.Distance(transform.position, currentPathTarget) <= 10.0f;
+            return Vector3.Distance(transform.position, currentPathTarget) <= 1.0f;
 
         return false;
     }
@@ -95,7 +97,32 @@ public class Enemy : TurnTaker, Killable
     {
 		if (isDead())
             yield break;
-        
+
+<<<<<<< HEAD
+        if (currentCountdown <= 0)
+        {
+            // do a turn!
+            currentCountdown = turnCountdown;
+
+            for (int i = 0; i < tileCount; ++i)
+            {
+                MapTile nextTile = PickATile();
+
+                // error checking
+                if (nextTile != null)
+                {
+                    // move to next node
+                    pathAnimationQueue.Add(nextTile.transform.position);
+                    nextTile.onArriveAtTile += OnMoveToTile;
+                    MapUnit.CurrentTile = nextTile;
+                    recentlyVisited.Add(MapUnit.CurrentTile);
+                    if (recentlyVisited.Count >= backtrackHistorySize)
+                        recentlyVisited.RemoveAt(0);
+                }
+            }
+        }
+
+=======
 		if (currentCountdown <= 0)
 		{
 			// do a turn!
@@ -105,31 +132,26 @@ public class Enemy : TurnTaker, Killable
 			{
 				// pick a node to move toward
 				MapTile nextTile = PickATile();
-
-                // direction
-                if (nextTile != MapUnit.CurrentTile)
-                {
-                    Direction newDirection = GetDirectionBetween(MapUnit.CurrentTile.transform.position, nextTile.transform.position);
-                    if (newDirection != direction)
-                    {
-                        direction = newDirection;
-                        if (turnsToTurn > 0)
-                        {
-                            i += turnsToTurn - 1;
-                            continue;
-                        }
-                    }
-                }
-
-                pathAnimationQueue.Add(nextTile.transform.position);
 				nextTile.onArriveAtTile += OnMoveToTile;
+
+				// direction
+				if (nextTile != MapUnit.CurrentTile)
+				{
+					Direction newDirection = GetDirectionBetween(MapUnit.CurrentTile.transform.position, nextTile.transform.position);
+					if (newDirection != direction)
+					{
+						direction = newDirection;
+						if (turningTakesATurn)
+							continue;
+					}
+				}
 				MapUnit.CurrentTile = nextTile;
 				recentlyVisited.Add(MapUnit.CurrentTile);
 				if (recentlyVisited.Count >= backtrackHistorySize)
 					recentlyVisited.RemoveAt(0);
 			}
 		}
-
+>>>>>>> 0ac33a86e8bf18566704d72bac4b1900b75459bf
         currentCountdown--;
 
         yield return null;
@@ -227,16 +249,41 @@ public class Enemy : TurnTaker, Killable
         return false;
     }
 
+<<<<<<< HEAD
+    private float CalculateMapTileScore(MapTile mapTile)
+=======
+    private void OnMoveToTile(MapTile mapTile, MapUnit mapUnit)
+    {
+        mapTile.onArriveAtTile -= OnMoveToTile;
+
+        MapUnit playerUnit = player.MapUnit;
+        MapTile playerTile = playerUnit.CurrentTile;
+
+        if (MapUnit.CurrentTile == playerTile)
+        {
+            if (player.Inventory.HasItem(ItemType.MetalStake) || player.Inventory.RemoveItem(ItemType.Stake, 1))
+            {
+                // this enemy dies!
+                Die();
+            }
+            else
+            {
+                player.Die();
+            }
+        }
+    }
+
     private float CalculateMapTileScore(MapTile mapTile, Direction? tileDirection)
+>>>>>>> 0ac33a86e8bf18566704d72bac4b1900b75459bf
     {
         float score = 0;
 
         // how close is this tile to the player?
         score += Vector3.Distance(player.transform.position, mapTile.transform.position) * playerWeight;
 
-		if (!tileDirection.HasValue || tileDirection.Value != direction)
+		if (turningTakesATurn && tileDirection.HasValue && tileDirection.Value != direction)
 		{
-            score += 32f * playerWeight;
+			score += 32f * adversionToTurns;
 		}
 
 		// consider is this backtracking?
