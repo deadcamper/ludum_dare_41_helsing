@@ -83,7 +83,6 @@ public class MapTile : MonoBehaviour
 		RegenerateDecorations(Map.Instance);
 	}
 
-
 	public void RegenerateDecorations(Map map)
 	{
         WallStyle wallStyle = (this.wallStyle == null) ? map.baseWallStyle : this.wallStyle;

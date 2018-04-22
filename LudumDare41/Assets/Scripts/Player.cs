@@ -232,6 +232,13 @@ public class Player : TurnTaker, Killable
                 {
                     PlayClip("door");
                     nextNode.isValid = true;
+                    
+                    nextNode.RegenerateDecorations(Map.Instance);
+                    foreach (MapTile neighbor in nextNode.Neighbors)
+                    {
+                        neighbor.RegenerateDecorations(Map.Instance);
+                    }
+
                     return true;
                 }
                 break;
