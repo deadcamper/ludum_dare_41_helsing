@@ -192,6 +192,9 @@ public class Enemy : TurnTaker, Killable
         {
 			MapTile mapTile = MapUnit.CurrentTile.GetNeighbor(tileDirection);
 
+            if (mapTile == null)
+                continue;
+
 			if (!mapTile.isValid && !ignoresWalls)
                 continue; // don't consider it if it's not valid
 

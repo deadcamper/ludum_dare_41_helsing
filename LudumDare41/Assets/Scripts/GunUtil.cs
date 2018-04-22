@@ -14,7 +14,7 @@ public static class GunUtil
         MapTile currentMapTile = player.MapUnit.CurrentTile;
         MapTile nextMapTile = currentMapTile.GetNeighbor(player.direction);
 
-        while (nextMapTile != null && nextMapTile.tileType == TileType.Floor)
+        while (nextMapTile != null && !IsObstacle(nextMapTile))
         {
             // current tile update
             currentMapTile = nextMapTile;
@@ -33,6 +33,20 @@ public static class GunUtil
         }
 
         return enemies;
+    }
+
+    private static bool IsObstacle(MapTile mapTile)
+    {
+        switch (mapTile.tileType)
+        {
+            case TileType.Wall:
+                return true;
+
+            case TileType.Door:
+                return !mapTile.isValid; // you can shoot through open doors only
+        }
+
+        return false;
     }
 
     public static void KillEnemiesInSight(Player player)
