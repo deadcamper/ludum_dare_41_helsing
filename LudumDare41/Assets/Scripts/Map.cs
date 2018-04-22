@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Map : MonoBehaviour
 {
-    private static float light_radius = 130.0f;
+    public float light_radius = 130.0f;
 
 	private static Map _instance;
 	public static Map Instance
@@ -20,6 +21,9 @@ public class Map : MonoBehaviour
 	}
 
 	private Dictionary<Vector2Int, MapTile> mapTiles = new Dictionary<Vector2Int, MapTile>();
+
+    [FormerlySerializedAs("wallStyle")]
+    public WallStyle baseWallStyle;
 
 	public void AddMapTile(MapTile mapTile)
 	{

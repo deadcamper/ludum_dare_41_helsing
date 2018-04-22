@@ -6,6 +6,7 @@ using UnityEngine;
 [CreateAssetMenu]
 public class WallStyle : ScriptableObject
 {
+    /*
 	private static WallStyle _instance;
 	public static WallStyle Instance{
 		get
@@ -17,6 +18,8 @@ public class WallStyle : ScriptableObject
 			return _instance;
 		}
 	}
+    */
+
 	public Sprite floor;
 	public Sprite fill;
 
@@ -96,8 +99,13 @@ public class WallStyle : ScriptableObject
 					else if (n.tileType == TileType.Door)
 					{
 						spriteInfos.Add(new SpriteInfo(Quaternion.Euler(0, 0, rotations[dir]), wall, sortingLayer, 3));
-						spriteInfos.Add(new SpriteInfo(Quaternion.Euler(0, 0, rotations[dir]), closedDoor, sortingLayer, 4));
-						spriteInfos.Add(new SpriteInfo(Quaternion.Euler(0, 0, rotations[dir]), LockedDoorFrame, sortingLayer, 5));
+
+                        if (!n.isValid)
+						    spriteInfos.Add(new SpriteInfo(Quaternion.Euler(0, 0, rotations[dir]), closedDoor, sortingLayer, 4));
+                        else
+                            spriteInfos.Add(new SpriteInfo(Quaternion.Euler(0, 0, rotations[dir]), openDoor, sortingLayer, 4));
+
+                        spriteInfos.Add(new SpriteInfo(Quaternion.Euler(0, 0, rotations[dir]), LockedDoorFrame, sortingLayer, 5));
 					}
 				}
                 //if (n == null || n.tileType == TileType.Wall || ne == null || ne.tileType == TileType.Wall)

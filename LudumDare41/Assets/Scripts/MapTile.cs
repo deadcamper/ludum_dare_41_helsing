@@ -83,8 +83,22 @@ public class MapTile : MonoBehaviour
 
 	public void RegenerateDecorations(Map map)
 	{
-		if(tileType == TileType.Wall || tileType == TileType.Door) SpriteRenderer.sprite = WallStyle.Instance.fill;
-		else SpriteRenderer.sprite = WallStyle.Instance.floor;
+        WallStyle wallStyle = (this.wallStyle == null) ? map.baseWallStyle : this.wallStyle;
+
+        if (wallStyle == null)
+        {
+            Debug.LogError("Wall style is undefined in Map. Define a wall style");
+            return;
+        }
+
+        if (tileType == TileType.Wall || tileType == TileType.Door)
+        {
+            SpriteRenderer.sprite = wallStyle.fill;
+        }
+        else
+        {
+            SpriteRenderer.sprite = wallStyle.floor;
+        }
 
 		if (!Application.isPlaying)
 			DestroyImmediate(GeneratedDecorationsParent.gameObject);
@@ -94,9 +108,9 @@ public class MapTile : MonoBehaviour
 				Destroy(child.gameObject);
 			}
 
-				if (WallStyle.Instance != null)
+		if (wallStyle != null)
 		{
-			var spriteInfos = WallStyle.Instance.GetWallSprites(map, Coordinates);
+			var spriteInfos = wallStyle.GetWallSprites(map, Coordinates);
 			foreach (var spriteInfo in spriteInfos)
 			{
 				AddGeneratedDecoratorSprite(spriteInfo.sprite, spriteInfo.rotation, spriteInfo.sortingLayer, spriteInfo.orderInLayer);
@@ -144,6 +158,9 @@ public class MapTile : MonoBehaviour
 
     public TileType tileType;
     public bool isValid;
+
+    public WallStyle wallStyle;
+
     public List<MapTile> Neighbors { get; private set; }
     public void AddNeighbor(MapTile tile)
     {
