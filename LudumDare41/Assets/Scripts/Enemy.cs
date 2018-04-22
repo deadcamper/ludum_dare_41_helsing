@@ -11,6 +11,9 @@ public class Enemy : TurnTaker, Killable
     public MapUnit MapUnit { get; private set; }
     private List<MapTile> recentlyVisited = new List<MapTile>();
 
+    public AudioSource deathSound;
+
+    private Direction direction;
     private Player player;
 
     private bool dead = false;
@@ -25,6 +28,16 @@ public class Enemy : TurnTaker, Killable
     void Start()
     {
         currentCountdown = turnCountdown;
+    }
+
+    private void Update()
+    {
+        if (MapUnit.CurrentTile != null)
+        {
+            transform.position = Vector3.Lerp(transform.position, MapUnit.CurrentTile.transform.position, 0.2f);
+        }
+
+        transform.rotation = Quaternion.Lerp(transform.rotation, DirectionUtil.GetSpriteRotationForDirection(direction), 0.2f);
     }
 
     public override bool TurnComplete()
@@ -45,19 +58,48 @@ public class Enemy : TurnTaker, Killable
             for (int i = 0; i < tileCount; ++i)
             {
                 // pick a node to move toward
-                MapUnit.CurrentTile = PickATile();
+                MapTile nextTile = PickATile();
+                nextTile.onArriveAtTile += OnMoveToTile;
+
+                // direction
+                direction = GetDirectionBetween(MapUnit.CurrentTile.transform.position, nextTile.transform.position);
+
+                MapUnit.CurrentTile = nextTile;
                 recentlyVisited.Add(MapUnit.CurrentTile);
                 if (recentlyVisited.Count >= backtrackHistorySize)
                     recentlyVisited.RemoveAt(0);
-                
-                transform.position = MapUnit.CurrentTile.transform.position;
-                OnMoveToTile();
             }
         }
 
         currentCountdown--;
 
         yield return null;
+    }
+
+    private Direction GetDirectionBetween(Vector3 pos1, Vector3 pos2)
+    {
+        float diffX = pos1.x - pos2.x;
+        float diffY = pos1.y - pos2.y;
+
+        if (diffX < 0)
+        {
+            return Direction.Right;
+        }
+        else if (diffX > 0)
+        {
+            return Direction.Left;
+        }
+
+        if (diffY < 0)
+        {
+            return Direction.Up;
+        }
+        else if (diffY > 0)
+        {
+            return Direction.Down;
+        }
+
+        return Direction.Up;
     }
 
     private MapTile PickATile()
@@ -82,8 +124,10 @@ public class Enemy : TurnTaker, Killable
         return nextTile;
     }
 
-    private void OnMoveToTile()
+    private void OnMoveToTile(MapTile mapTile, MapUnit mapUnit)
     {
+        mapTile.onArriveAtTile -= OnMoveToTile;
+
         MapUnit playerUnit = player.MapUnit;
         MapTile playerTile = playerUnit.CurrentTile;
 
@@ -120,7 +164,7 @@ public class Enemy : TurnTaker, Killable
     public void Die()
     {
         dead = true;
-
+        deathSound.Play();
         // TODO change "visual" states
     }
 

@@ -22,7 +22,7 @@ public class Coffin : MonoBehaviour
     public void OpenCoffin()
     {
         render.sprite = coffinOpen;
-        coffinSound.Play();
+        //coffinSound.Play();
 
         //Spawn baddie
         if (enemyTemplateToSpawn != null)

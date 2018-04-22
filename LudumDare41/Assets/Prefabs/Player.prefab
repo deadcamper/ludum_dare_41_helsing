@@ -285,12 +285,18 @@ MonoBehaviour:
   game: {fileID: 0}
   direction: 0
   audioLibrary:
-  - name: collect
-    clip: {fileID: 8300000, guid: f0d198f796d564b7786805987b966119, type: 3}
   - name: win
     clip: {fileID: 8300000, guid: ecf4d0ebe240246bc92a21f7bd18e64b, type: 3}
+    volume: 1
+  - name: walk
+    clip: {fileID: 8300000, guid: 04bc6ab210fe645feb91fedd69b22436, type: 3}
+    volume: 0.2
   - name: death
     clip: {fileID: 8300000, guid: b858d188145b9417b9afd861910cc741, type: 3}
+    volume: 1
+  - name: door
+    clip: {fileID: 8300000, guid: 61871806df52644fabac8bc7ae7d8d22, type: 3}
+    volume: 1
   audioSource: {fileID: 82260245937037434}
 --- !u!212 &212242242043769666
 SpriteRenderer:

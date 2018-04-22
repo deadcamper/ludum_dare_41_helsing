@@ -11,6 +11,8 @@ public class HUD : MonoBehaviour
     public Image keyImageSource;
     private Dictionary<ItemType, Image> keyImages = new Dictionary<ItemType, Image>();
 
+    public AudioSource audioSource;
+
     // Update is called once per frame
     void Update()
     {
@@ -34,8 +36,9 @@ public class HUD : MonoBehaviour
         switch (itemType)
         {
             case ItemType.Key: // TODO as we add other key types, add them here (KeyGreen, KeyBlue, etc)
-                if (qty == 1)
+                if (qty > 0)
                 {
+                    audioSource.Play();
                     keyImages.Add(itemType, Instantiate(keyImageSource, transform));
                 }
                 else

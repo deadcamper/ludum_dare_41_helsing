@@ -142,7 +142,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: b858d188145b9417b9afd861910cc741, type: 3}
+  m_audioClip: {fileID: 8300000, guid: d1b51bf895ff8400db216768a26f71c6, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -224,9 +224,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e953a39dc075340d48678891a82cc1ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundAttack: {fileID: 82125181551530000}
-  turnCountdown: 3
-  tileCount: 2
+  turnCountdown: 2
+  tileCount: 1
+  deathSound: {fileID: 82125181551530000}
 --- !u!114 &114844956846292850
 MonoBehaviour:
   m_ObjectHideFlags: 1

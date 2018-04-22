@@ -7,15 +7,15 @@ public class CollectibleItem : MonoBehaviour
     public ItemType itemType;
     public int qty = 1;
     private Map map;
-    private MapTile mapTile;
+    private MapTile currentMapTile;
 
     public UnityEvent OnCollect;
 
     private void Start()
     {
         map = FindObjectOfType<Map>();
-        mapTile = map.GetMapTileNearest(transform.position);
-        mapTile.onArriveAtTile += OnPlayerArriveAtTile;
+        currentMapTile = map.GetMapTileNearest(transform.position);
+        currentMapTile.onArriveAtTile += OnPlayerArriveAtTile;
     }
 
     private void OnPlayerArriveAtTile(MapTile mapTile, MapUnit mapUnit)

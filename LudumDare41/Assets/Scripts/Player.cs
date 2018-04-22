@@ -12,6 +12,7 @@ public class Player : TurnTaker, Killable
     {
         public string name;
         public AudioClip clip;
+        public float volume;
     }
     public List<AudioLibraryEntry> audioLibrary;
     public AudioSource audioSource;
@@ -30,29 +31,21 @@ public class Player : TurnTaker, Killable
         Inventory.Items.Add(ItemType.Stake, 1);
         Inventory.Items.Add(ItemType.SilverBullet, 6);
         Inventory.Items.Add(ItemType.Key, 0);
-        Inventory.onItemChange += OnItemAdded;
     }
 
-    public void PlayClip(string name)
+    public void PlayClip(string name, bool isPriority = false)
     {
         foreach (AudioLibraryEntry entry in audioLibrary)
         {
             if (entry.name.Equals(name))
             {
+                audioSource.volume = entry.volume;
                 audioSource.clip = entry.clip;
+
+                if (isPriority || !audioSource.isPlaying)
+                    audioSource.Play();
                 break;
             }
-        }
-
-        audioSource.Play();
-    }
-
-    private void OnItemAdded(ItemType itemType, int qty)
-    {
-        // pickup an item
-        if (qty > 0)
-        {
-            PlayClip("collect");
         }
     }
 
@@ -65,29 +58,7 @@ public class Player : TurnTaker, Killable
             transform.position = Vector3.Lerp(transform.position, MapUnit.CurrentTile.transform.position, 0.3f);
         }
 
-        RotateSpriteToDirection();
-    }
-
-    private void RotateSpriteToDirection()
-    {
-        switch(direction)
-        {
-            case Direction.Up:
-                transform.rotation = Quaternion.AngleAxis(180, Vector3.right);
-                break;
-
-            case Direction.Down:
-                transform.rotation = Quaternion.AngleAxis(0, Vector3.right);
-                break;
-
-            case Direction.Left:
-                transform.rotation = Quaternion.AngleAxis(270, Vector3.forward);
-                break;
-
-            case Direction.Right:
-                transform.rotation = Quaternion.AngleAxis(90, Vector3.forward);
-                break;
-        }
+        transform.rotation = DirectionUtil.GetSpriteRotationForDirection(direction);
     }
 
     public override IEnumerator TurnLogic()
@@ -157,6 +128,7 @@ public class Player : TurnTaker, Killable
                 {
                     MapUnit.CurrentTile = nextNode;
                     turnComplete = true;
+                    PlayClip("walk");
                 }
                 else
                 {
@@ -190,6 +162,7 @@ public class Player : TurnTaker, Killable
             case TileType.Door: // TODO as we add more "door" types / "key" types, we gotta account for that here d
                 if (Inventory.RemoveItem(ItemType.Key, 1))
                 {
+                    PlayClip("door");
                     nextNode.isValid = true;
                     return true;
                 }
