@@ -51,6 +51,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4955629049726856}
+  - component: {fileID: 114317423374114674}
   m_Layer: 9
   m_Name: Vampire
   m_TagString: Untagged
@@ -129,6 +130,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114317423374114674
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1791543625283012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e953a39dc075340d48678891a82cc1ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundAttack: {fileID: 0}
+  turnCountdown: 1
+  tileCount: 1
 --- !u!212 &212062988908427484
 SpriteRenderer:
   m_ObjectHideFlags: 1
