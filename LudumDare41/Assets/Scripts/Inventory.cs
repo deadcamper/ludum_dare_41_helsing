@@ -4,7 +4,8 @@ public enum ItemType
 {
     Stake,
     SilverBullet,
-    Key
+    Key,
+    MetalStake
 }
 
 public class Inventory
@@ -44,5 +45,13 @@ public class Inventory
             onItemChange(itemType, -qty);
 
         return true;
+    }
+
+    public bool HasItem(ItemType itemType)
+    {
+        int owned = 0;
+        Items.TryGetValue(itemType, out owned);
+
+        return (owned > 0);
     }
 }

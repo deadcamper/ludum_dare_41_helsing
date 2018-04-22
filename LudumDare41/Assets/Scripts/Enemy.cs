@@ -167,7 +167,7 @@ public class Enemy : TurnTaker, Killable
 
         if (MapUnit.CurrentTile == playerTile)
         {
-            if (player.Inventory.RemoveItem(ItemType.Stake, 1))
+            if (player.Inventory.HasItem(ItemType.MetalStake) || player.Inventory.RemoveItem(ItemType.Stake, 1))
             {
                 // this enemy dies!
                 Die();

@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Map : MonoBehaviour
 {
-    private static float light_radius = 100.0f;
-    private static float enemy_light_radius = 120.0f;
+    public float light_radius = 130.0f;
+    public float enemy_light_radius = -1f;
 
 	private static Map _instance;
 	public static Map Instance
@@ -21,6 +22,9 @@ public class Map : MonoBehaviour
 	}
 
 	private Dictionary<Vector2Int, MapTile> mapTiles = new Dictionary<Vector2Int, MapTile>();
+
+    [FormerlySerializedAs("wallStyle")]
+    public WallStyle baseWallStyle;
 
 	public void AddMapTile(MapTile mapTile)
 	{
@@ -100,16 +104,19 @@ public class Map : MonoBehaviour
 
             sr.color += Color.Lerp(Color.white, Color.clear, Vector3.Distance(mapTile.transform.position, player.transform.position) / light_radius);
 
-            foreach (Enemy enemy in enemies)
+            if (enemy_light_radius > 0f)
             {
-                sr.color += Color.Lerp(Color.white, Color.clear, Vector3.Distance(mapTile.transform.position, enemy.transform.position) / enemy_light_radius);
+                foreach (Enemy enemy in enemies)
+                {
+                    sr.color += Color.Lerp(Color.white, Color.clear, Vector3.Distance(mapTile.transform.position, enemy.transform.position) / enemy_light_radius);
+                }
             }
 
             SpriteRenderer[] renderers = mapTile.GetComponentsInChildren<SpriteRenderer>();
             foreach (SpriteRenderer ren in renderers)
             {
                 ren.color = sr.color;
-            }
+    }
         }
     }
 

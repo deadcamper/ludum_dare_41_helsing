@@ -500,6 +500,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db049fcaa3ce24e928978a64c4ae1308, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  light_radius: 130
+  wallStyle: {fileID: 11400000, guid: 3d6302c9543efb641a44c8c8039c0039, type: 2}
 --- !u!1001 &27877736
 Prefab:
   m_ObjectHideFlags: 0
@@ -8767,6 +8769,7 @@ MonoBehaviour:
   deathSound: {fileID: 0}
   liveSprite: {fileID: 0}
   deadSprite: {fileID: 0}
+  startingDirection: 0
 --- !u!1001 &2125894586
 Prefab:
   m_ObjectHideFlags: 0

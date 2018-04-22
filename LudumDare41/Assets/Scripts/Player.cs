@@ -49,14 +49,12 @@ public class Player : TurnTaker, Killable
         MapUnit = new MapUnit(transform.position, this);
         Inventory = new Inventory();
         Inventory.Items.Add(ItemType.Stake, 1);
-        Inventory.Items.Add(ItemType.SilverBullet, 6);
+        Inventory.Items.Add(ItemType.SilverBullet, 0);
         Inventory.Items.Add(ItemType.Key, 0);
-		Dead = false;
-		Inventory.onItemChange += (a, b) =>
-		{
-			stakeArmSprite.SetActive(Inventory.Items.Any(kvp => kvp.Key == ItemType.Stake        && kvp.Value > 0));
-			gunArmSprite.SetActive(  Inventory.Items.Any(kvp => kvp.Key == ItemType.SilverBullet && kvp.Value > 0));
-		};
+        Inventory.Items.Add(ItemType.MetalStake, 0);
+        Dead = false;
+        Inventory.onItemChange += UpdatePlayerSpritesWithInventory;
+        UpdatePlayerSpritesWithInventory(ItemType.Key, 0); //Force trigger to update player
 
         if (game == null)
         {
@@ -64,7 +62,13 @@ public class Player : TurnTaker, Killable
         }
     }
 
-    public void PlayClip(string name, bool isPlayingOverride = false)
+    private void UpdatePlayerSpritesWithInventory(ItemType t, int q)
+    {
+        stakeArmSprite.SetActive(Inventory.Items.Any(kvp => kvp.Key == ItemType.Stake && kvp.Value > 0));
+        gunArmSprite.SetActive(Inventory.Items.Any(kvp => kvp.Key == ItemType.SilverBullet && kvp.Value > 0));
+    }
+
+    public void PlayClip(string name)
     {
         foreach (AudioLibraryEntry entry in audioLibrary)
         {
