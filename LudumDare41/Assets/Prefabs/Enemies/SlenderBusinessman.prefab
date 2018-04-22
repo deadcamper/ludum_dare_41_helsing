@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212168932702408824}
   - component: {fileID: 114762629606088062}
   - component: {fileID: 82125181551530000}
+  - component: {fileID: 114844956846292850}
   m_Layer: 9
   m_Name: SlenderBusinessman
   m_TagString: Untagged
@@ -36,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1370497296247234}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 225.3, y: 197, z: -7.75}
+  m_LocalPosition: {x: 256, y: 192, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -109,7 +110,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -136,6 +137,17 @@ MonoBehaviour:
   soundAttack: {fileID: 82125181551530000}
   turnCountdown: 1
   tileCount: 1
+--- !u!114 &114844956846292850
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1370497296247234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24bea72d11cc2a445bd5215577a686d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212168932702408824
 SpriteRenderer:
   m_ObjectHideFlags: 1
