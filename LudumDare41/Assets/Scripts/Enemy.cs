@@ -4,7 +4,24 @@ using UnityEngine;
 
 public class Enemy : TurnTaker, Killable
 {
-    private int backtrackHistorySize = 4;
+	const float turnDuration = .25f;
+
+	public class PathAnimationEntry
+	{
+		public Vector3 goalPosition;
+
+		public Direction goalDirection;
+		public int turns;
+
+		public PathAnimationEntry(MapTile goalTile, Direction goalDirection, int turns = 1)
+		{
+			this.goalPosition = goalTile.transform.position;
+			this.goalDirection = goalDirection;
+			this.turns = turns;
+		}
+	}
+
+	private int backtrackHistorySize = 4;
     public int turnCountdown;
     public int tileCount = 1;
     public float playerWeight = 1.0f;
@@ -12,8 +29,8 @@ public class Enemy : TurnTaker, Killable
     private int currentCountdown;
     public MapUnit MapUnit { get; private set; }
     private List<MapTile> recentlyVisited = new List<MapTile>();
-    private List<Vector3> pathAnimationQueue = new List<Vector3>();
-    private Vector3 currentPathTarget;
+    private List<PathAnimationEntry> pathAnimationQueue = new List<PathAnimationEntry>();
+    private PathAnimationEntry currentPathTarget;
 
     public AudioSource deathSound;
 
@@ -47,7 +64,6 @@ public class Enemy : TurnTaker, Killable
     {
         player = FindObjectOfType<Player>();
         MapUnit = new MapUnit(transform.position, this);
-        currentPathTarget = transform.position;
     }
 
     // Use this for initialization
@@ -58,32 +74,44 @@ public class Enemy : TurnTaker, Killable
 		Dead = false;
 	}
 
-    private void Update()
-    {
-        if (pathAnimationQueue.Count > 0)
-        {
-            if (currentPathTarget == null || AtCurrentPathTarget())
-            {
-                int index = 0;
-                currentPathTarget = pathAnimationQueue[index];
-                pathAnimationQueue.RemoveAt(index);
-                direction = GetDirectionBetween(transform.position, currentPathTarget);
-            }
-        }
+	float animationStartTime;
+	float animationEndTime;
+	float startAngle;
+	float endAngle;
+	Vector3 startPosition;
+	Vector3 endPosition;
+
+	private void Update()
+	{
+		if (pathAnimationQueue.Count > 0)
+		{
+			if (animationEndTime < Time.time)
+			{
+				int index = 0;
+				currentPathTarget = pathAnimationQueue[index];
+				pathAnimationQueue.RemoveAt(index);
+				direction = currentPathTarget.goalDirection;
+
+				animationStartTime = Time.time;
+
+				if (currentPathTarget.turns > 0)
+					animationEndTime = animationStartTime + turnDuration / currentPathTarget.turns;
+				else
+					animationEndTime = animationStartTime;
+
+				startAngle = transform.rotation.eulerAngles.z;
+				endAngle = DirectionUtil.GetSpriteRotationForDirection(currentPathTarget.goalDirection).eulerAngles.z;
+				startPosition = transform.position;
+				endPosition = currentPathTarget.goalPosition;
+			}
+		}
 
         if (currentPathTarget != null)
         {
-            transform.position = Vector3.Lerp(transform.position, currentPathTarget, 0.8f);
-            transform.rotation = Quaternion.Euler(0, 0, Mathf.LerpAngle(transform.rotation.eulerAngles.z, DirectionUtil.GetSpriteRotationForDirection(direction).eulerAngles.z, 0.6f));
+			float lerp = Mathf.InverseLerp(animationStartTime, animationEndTime, Time.time);
+			transform.position = Vector3.Lerp(startPosition, endPosition, lerp);
+            transform.rotation = Quaternion.Euler(0, 0, Mathf.LerpAngle(startAngle, endAngle, lerp));
         }
-    }
-
-    private bool AtCurrentPathTarget()
-    {
-        if (currentPathTarget != null)
-            return Vector3.Distance(transform.position, currentPathTarget) <= 10.0f;
-
-        return false;
     }
 
     public override bool TurnComplete()
@@ -95,13 +123,14 @@ public class Enemy : TurnTaker, Killable
     {
 		if (isDead())
             yield break;
-        
+
+		Direction dir = direction;
 		if (currentCountdown <= 0)
 		{
 			// do a turn!
 			currentCountdown = turnCountdown;
 
-			for (int i = 0; i < tileCount; ++i)
+			for (int tilesRemaining = tileCount; tilesRemaining > 0; --tilesRemaining)
 			{
 				// pick a node to move toward
 				MapTile nextTile = PickATile();
@@ -110,18 +139,19 @@ public class Enemy : TurnTaker, Killable
                 if (nextTile != MapUnit.CurrentTile)
                 {
                     Direction newDirection = GetDirectionBetween(MapUnit.CurrentTile.transform.position, nextTile.transform.position);
-                    if (newDirection != direction)
+                    if (newDirection != dir)
                     {
-                        direction = newDirection;
+						dir = newDirection;
                         if (turnsToTurn > 0)
                         {
-                            i += turnsToTurn - 1;
-                            continue;
+                            tilesRemaining -= turnsToTurn - 1;
+							pathAnimationQueue.Add(new PathAnimationEntry(MapUnit.CurrentTile, dir, Mathf.Min(tilesRemaining, turnsToTurn)));
+							continue;
                         }
                     }
                 }
 
-                pathAnimationQueue.Add(nextTile.transform.position);
+                pathAnimationQueue.Add(new PathAnimationEntry(nextTile, dir));
 				nextTile.onArriveAtTile += OnMoveToTile;
 				MapUnit.CurrentTile = nextTile;
 				recentlyVisited.Add(MapUnit.CurrentTile);
