@@ -16,9 +16,15 @@ public class Enemy : TurnTaker, Killable
 	public GameObject liveSprite;
 	public GameObject deadSprite;
 
-    public Direction startingDirection;
+	[Tooltip("if turningTakesATurn 1 is optimal, otherwise 0 is optimal")]
+	[Range(0,10)]
+	public int adversionToTurns = 0;
+
+
+	public Direction startingDirection;
 
 	public bool ignoresWalls = false;
+	public bool turningTakesATurn = false;
 
 	private Direction direction;
     private Player player;
@@ -65,31 +71,37 @@ public class Enemy : TurnTaker, Killable
 
     public override IEnumerator TurnLogic()
     {
-        if (isDead())
+		if (isDead())
             yield break;
 
-        if (currentCountdown <= 0)
-        {
-            // do a turn!
-            currentCountdown = turnCountdown;
+		if (currentCountdown <= 0)
+		{
+			// do a turn!
+			currentCountdown = turnCountdown;
 
-            for (int i = 0; i < tileCount; ++i)
-            {
-                // pick a node to move toward
-                MapTile nextTile = PickATile();
-                nextTile.onArriveAtTile += OnMoveToTile;
+			for (int i = 0; i < tileCount; ++i)
+			{
+				// pick a node to move toward
+				MapTile nextTile = PickATile();
+				nextTile.onArriveAtTile += OnMoveToTile;
 
-                // direction
-                if (nextTile != MapUnit.CurrentTile)
-                    direction = GetDirectionBetween(MapUnit.CurrentTile.transform.position, nextTile.transform.position);
-
-                MapUnit.CurrentTile = nextTile;
-                recentlyVisited.Add(MapUnit.CurrentTile);
-                if (recentlyVisited.Count >= backtrackHistorySize)
-                    recentlyVisited.RemoveAt(0);
-            }
-        }
-
+				// direction
+				if (nextTile != MapUnit.CurrentTile)
+				{
+					Direction newDirection = GetDirectionBetween(MapUnit.CurrentTile.transform.position, nextTile.transform.position);
+					if (newDirection != direction)
+					{
+						direction = newDirection;
+						if (turningTakesATurn)
+							continue;
+					}
+				}
+				MapUnit.CurrentTile = nextTile;
+				recentlyVisited.Add(MapUnit.CurrentTile);
+				if (recentlyVisited.Count >= backtrackHistorySize)
+					recentlyVisited.RemoveAt(0);
+			}
+		}
         currentCountdown--;
 
         yield return null;
@@ -124,18 +136,23 @@ public class Enemy : TurnTaker, Killable
     private MapTile PickATile()
     {
         // start by considering our current tile (the current tile may have become the most beneficial tile)
-        float currentMapTileScore = CalculateMapTileScore(MapUnit.CurrentTile);
+        float currentMapTileScore = CalculateMapTileScore(MapUnit.CurrentTile, null);
         MapTile nextTile = MapUnit.CurrentTile;
 
-        foreach (MapTile mapTile in MapUnit.CurrentTile.GetNeighbors(ignoresWalls))
+        foreach (Direction tileDirection in DirectionUtil.All)
         {
-            if (!mapTile.isValid && !ignoresWalls)
+			MapTile mapTile = MapUnit.CurrentTile.GetNeighbor(tileDirection);
+
+			if (!mapTile.isValid && !ignoresWalls)
                 continue; // don't consider it if it's not valid
 
-            if (IsTileOccupied(mapTile))
+			if(mapTile.tileType == TileType.Wall && !ignoresWalls)
+				continue;
+
+			if (IsTileOccupied(mapTile))
                 continue;
 
-            float score = CalculateMapTileScore(mapTile);
+            float score = CalculateMapTileScore(mapTile, tileDirection);
 			
             if (score < currentMapTileScore)
             {
@@ -182,15 +199,20 @@ public class Enemy : TurnTaker, Killable
         }
     }
 
-    private float CalculateMapTileScore(MapTile mapTile)
+    private float CalculateMapTileScore(MapTile mapTile, Direction? tileDirection)
     {
         float score = 0;
 
         // how close is this tile to the player?
         score += Vector3.Distance(player.transform.position, mapTile.transform.position);
 
-        // consider is this backtracking?
-        if (recentlyVisited.Contains(mapTile))
+		if (turningTakesATurn && tileDirection.HasValue && tileDirection.Value != direction)
+		{
+			score += 32f * adversionToTurns;
+		}
+
+		// consider is this backtracking?
+		if (recentlyVisited.Contains(mapTile))
         {
             score *= 1.7f;
         }

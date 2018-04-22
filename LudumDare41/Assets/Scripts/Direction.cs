@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public enum Direction
 {
@@ -10,7 +11,17 @@ public enum Direction
 
 public static class DirectionUtil
 {
-    public static Quaternion GetSpriteRotationForDirection(Direction direction)
+	public static IEnumerable<Direction> All
+	{
+		get
+		{
+			yield return Direction.Up;
+			yield return Direction.Down;
+			yield return Direction.Left;
+			yield return Direction.Right;
+		}
+	}
+	public static Quaternion GetSpriteRotationForDirection(Direction direction)
     {
         switch (direction)
         {
