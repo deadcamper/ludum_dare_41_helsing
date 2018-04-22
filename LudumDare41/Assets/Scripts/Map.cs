@@ -84,7 +84,7 @@ public class Map : MonoBehaviour
         {
             // Win the game!
             Debug.Log("Win the game!");
-            player.PlayClip("win", true);
+            player.PlayClip("win");
         }
     }
 

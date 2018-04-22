@@ -11,11 +11,9 @@ public class Player : TurnTaker, Killable
     public struct AudioLibraryEntry
     {
         public string name;
-        public AudioClip clip;
-        public float volume;
+        public AudioSource audioSource;
     }
     public List<AudioLibraryEntry> audioLibrary;
-    public AudioSource audioSource;
 
     public MapUnit MapUnit { get; private set; }
 
@@ -24,7 +22,7 @@ public class Player : TurnTaker, Killable
 
     private bool dead = false;
 
-    private void Start()
+    private void Awake()
     {
         MapUnit = new MapUnit(transform.position, this);
         Inventory = new Inventory();
@@ -33,17 +31,14 @@ public class Player : TurnTaker, Killable
         Inventory.Items.Add(ItemType.Key, 0);
     }
 
-    public void PlayClip(string name, bool isPriority = false)
+    public void PlayClip(string name)
     {
         foreach (AudioLibraryEntry entry in audioLibrary)
         {
             if (entry.name.Equals(name))
             {
-                audioSource.volume = entry.volume;
-                audioSource.clip = entry.clip;
-
-                if (isPriority || !audioSource.isPlaying)
-                    audioSource.Play();
+                if (!entry.audioSource.isPlaying)
+                    entry.audioSource.Play();
                 break;
             }
         }
