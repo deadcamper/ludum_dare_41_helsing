@@ -15,13 +15,16 @@ public class Enemy : TurnTaker, Killable
 
     private bool dead = false;
 
+    void Awake()
+    {
+        player = FindObjectOfType<Player>();
+        MapUnit = new MapUnit(transform.position, this);
+    }
+
     // Use this for initialization
     void Start()
     {
-        player = FindObjectOfType<Player>();
-
         currentCountdown = turnCountdown;
-        MapUnit = new MapUnit(transform.position, this);
     }
 
     public override bool TurnComplete()

@@ -9,11 +9,24 @@ public enum TileType
     Door,
     Exit
 }
+
 [ExecuteInEditMode]
 public class MapTile : MonoBehaviour
 {
     public static int TILE_SIZE = 32;
-	
+
+	SpriteRenderer _spriteRenderer;
+	SpriteRenderer SpriteRenderer
+	{
+		get
+		{
+			if (_spriteRenderer == null)
+			{
+				_spriteRenderer = GetComponent<SpriteRenderer>();
+			}
+			return _spriteRenderer;
+		}
+	}
 	Transform _generatedDecorationsParent;
 	Transform GeneratedDecorationsParent
 	{
@@ -23,15 +36,33 @@ public class MapTile : MonoBehaviour
 			{
 				foreach (Transform childT in transform)
 				{
-					if (childT.name == "GeneratedDecorationsParent")
+					if (childT.name.Contains("GeneratedDecorationsParent"))
 					{
-						_generatedDecorationsParent = childT;
+						if (_generatedDecorationsParent == null)
+						{
+							_generatedDecorationsParent = childT;
+						}
+						else
+						{
+							/*if (!Application.isPlaying)
+								DestroyImmediate(childT.gameObject);
+							else
+								Destroy(childT.gameObject);*/
+						}
 					}
 				}
 				if (_generatedDecorationsParent == null)
 				{
-					_generatedDecorationsParent = new GameObject("GeneratedDecorationsParent").transform;
-
+					if (Application.isPlaying)
+					{
+						GameObject temp = new GameObject("GeneratedDecorationsParent");
+						_generatedDecorationsParent = Instantiate(temp).transform;
+						Destroy(temp);
+					}
+					else
+					{
+						_generatedDecorationsParent = new GameObject("GeneratedDecorationsParent").transform;
+					}
 				}
 			}
 			_generatedDecorationsParent.SetParent(transform, false);
@@ -44,15 +75,26 @@ public class MapTile : MonoBehaviour
 	{
 		Map.Instance.AddMapTile(this);
 	}
+	void Start()
+	{
+		RegenerateDecorations(Map.Instance);
+	}
+
 
 	public void RegenerateDecorations(Map map)
 	{
-		if(!Application.isPlaying)
+		if(tileType == TileType.Wall || tileType == TileType.Door) SpriteRenderer.sprite = WallStyle.Instance.fill;
+		else SpriteRenderer.sprite = WallStyle.Instance.floor;
+
+		if (!Application.isPlaying)
 			DestroyImmediate(GeneratedDecorationsParent.gameObject);
 		else
-			Destroy(GeneratedDecorationsParent.gameObject);
+			foreach (Transform child in GeneratedDecorationsParent)
+			{
+				Destroy(child.gameObject);
+			}
 
-		if (WallStyle.Instance != null)
+				if (WallStyle.Instance != null)
 		{
 			var spriteInfos = WallStyle.Instance.GetWallSprites(map, Coordinates);
 			foreach (var spriteInfo in spriteInfos)

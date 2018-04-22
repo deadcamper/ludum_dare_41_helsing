@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 public class CollectibleItem : MonoBehaviour 
 {
+    
     public ItemType itemType;
     public int qty = 1;
     private Map map;
     private MapTile mapTile;
+
+    public UnityEvent OnCollect;
 
     private void Start()
     {
@@ -26,5 +30,7 @@ public class CollectibleItem : MonoBehaviour
         }
 
         mapTile.onArriveAtTile -= OnPlayerArriveAtTile;
+
+        OnCollect.Invoke();
     }
 }

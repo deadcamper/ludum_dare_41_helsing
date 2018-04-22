@@ -28,7 +28,7 @@ public class Map : MonoBehaviour
 
 	public MapTile GetMapTile(Vector2Int coordinates)
 	{
-		if (!Application.isPlaying)
+		//if (!Application.isPlaying)
 		{
 			return FindObjectsOfType<MapTile>().FirstOrDefault(t => t.Coordinates == coordinates);
 		}
