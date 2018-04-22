@@ -1,9 +1,11 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 
 public class Player : TurnTaker, Killable
 {
+    public Game game;
     public Direction direction;
+
     public MapUnit MapUnit { get; private set; }
 
     private bool turnComplete = false;
@@ -61,7 +63,7 @@ public class Player : TurnTaker, Killable
 
         while (!turnComplete)
         {
-            if (isDead())
+            if (isDead() || game.IsPaused())
             {
                 yield return null;
                 continue; //Hack to prevent turn completion
