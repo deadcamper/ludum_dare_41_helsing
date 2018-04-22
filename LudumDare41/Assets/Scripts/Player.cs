@@ -1,9 +1,10 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 
 public class Player : TurnTaker, Killable
 {
     public Game game;
+    public Direction direction;
 
     public MapUnit MapUnit { get; private set; }
 
@@ -29,13 +30,38 @@ public class Player : TurnTaker, Killable
         {
             transform.position = Vector3.Lerp(transform.position, MapUnit.CurrentTile.transform.position, 0.3f);
         }
+
+        RotateSpriteToDirection();
+    }
+
+    private void RotateSpriteToDirection()
+    {
+        switch(direction)
+        {
+            case Direction.Up:
+                transform.rotation = Quaternion.AngleAxis(180, Vector3.right);
+                break;
+
+            case Direction.Down:
+                transform.rotation = Quaternion.AngleAxis(0, Vector3.right);
+                break;
+
+            case Direction.Left:
+                transform.rotation = Quaternion.AngleAxis(270, Vector3.forward);
+                break;
+
+            case Direction.Right:
+                transform.rotation = Quaternion.AngleAxis(90, Vector3.forward);
+                break;
+        }
     }
 
     public override IEnumerator TurnLogic()
     {
         MapTile nextNode = null;
         turnComplete = false;
-        while (nextNode == null)
+
+        while (!turnComplete)
         {
             if (isDead() || game.IsPaused())
             {
@@ -46,37 +72,65 @@ public class Player : TurnTaker, Killable
             if (Input.GetKeyUp(KeyCode.W))
             {
                 // up
-                nextNode = MapUnit.CurrentTile.GetNeighbor(Vector3.up);
+                if (direction == Direction.Up)
+                    nextNode = MapUnit.CurrentTile.GetNeighbor(Vector3.up);
+                else
+                {
+                    direction = Direction.Up;
+                    turnComplete = true;
+                }
             }
 
             if (Input.GetKeyUp(KeyCode.S))
             {
                 // down
-                nextNode = MapUnit.CurrentTile.GetNeighbor(Vector3.down);
+                if (direction == Direction.Down)
+                    nextNode = MapUnit.CurrentTile.GetNeighbor(Vector3.down);
+                else
+                {
+                    direction = Direction.Down;
+                    turnComplete = true;
+                }
             }
 
             if (Input.GetKeyUp(KeyCode.A))
             {
                 // left
-                nextNode = MapUnit.CurrentTile.GetNeighbor(Vector3.left);
+                if (direction == Direction.Left)
+                    nextNode = MapUnit.CurrentTile.GetNeighbor(Vector3.left);
+                else
+                {
+                    direction = Direction.Left;
+                    turnComplete = true;
+                }
             }
 
             if (Input.GetKeyUp(KeyCode.D))
             {
                 // right
-                nextNode = MapUnit.CurrentTile.GetNeighbor(Vector3.right);
+                if (direction == Direction.Right)
+                    nextNode = MapUnit.CurrentTile.GetNeighbor(Vector3.right);
+                else
+                {
+                    direction = Direction.Right;
+                    turnComplete = true;
+                }
             }
 
             if (nextNode != null)
             {
                 if (nextNode.isValid)
+                {
                     MapUnit.CurrentTile = nextNode;
+                    turnComplete = true;
+                }
                 else
                 {
                     if (AttemptUseKey(nextNode))
                     {
                         // used a key! (door is now marked as valid)
                         MapUnit.CurrentTile = nextNode;
+                        turnComplete = true;
                     }
                     else
                     {
@@ -87,7 +141,6 @@ public class Player : TurnTaker, Killable
 
             yield return null;
         }
-        turnComplete = true;
     }
 
     private bool AttemptUseKey(MapTile nextNode)
