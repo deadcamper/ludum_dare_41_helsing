@@ -13,14 +13,26 @@ public class Coffin : MonoBehaviour
 
     public AudioSource coffinSound;
 
+    public bool startOpen;
+    private bool isOpen;
+
     private void Start()
     {
         MapUnit = new MapUnit(transform.position, null);
         render.sprite = coffinClosed;
+
+        if(startOpen)
+        {
+            render.sprite = coffinOpen;
+            isOpen = true;
+        }
     }
         
     public void OpenCoffin()
     {
+        if (isOpen)
+            return;
+
         render.sprite = coffinOpen;
         coffinSound.Play();
 
@@ -36,5 +48,7 @@ public class Coffin : MonoBehaviour
                 turns.AddTurnTaker(enemy.GetComponent<TurnTaker>());
             }
         }
+
+        isOpen = true;
     }
 }

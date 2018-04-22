@@ -51,7 +51,7 @@ public class WallStyle : ScriptableObject
 
 		MapTile center = map.GetMapTile(coordinates);
 
-		if (center.tileType == TileType.Floor)
+		if (TileMatchesTileType(center, TileType.Floor, TileType.Exit))
 		{
 			int[] rotations = new int[] { 0, 90, 180, 270 };
 

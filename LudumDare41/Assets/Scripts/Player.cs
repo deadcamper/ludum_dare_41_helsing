@@ -10,7 +10,7 @@ public class Player : TurnTaker, Killable
 	public GameObject gunArmSprite;
 	public GameObject stakeArmSprite;
 
-
+    private int lastFrameCount = 0;
 
     public Game game;
     public Direction direction;
@@ -71,7 +71,7 @@ public class Player : TurnTaker, Killable
 
     private void Update()
     {
-        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, transform.position + (Vector3.back * 20), 0.1f);
+        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, transform.position + (Vector3.back * 20), 0.3f);
 
         if (MapUnit.CurrentTile != null)
         {
@@ -94,53 +94,57 @@ public class Player : TurnTaker, Killable
                 continue; //Hack to prevent turn completion
             }
 
-            if (Input.GetKeyUp(KeyCode.W))
+            if (lastFrameCount != Time.frameCount)
             {
-                // up
-                if (direction == Direction.Up)
-                    nextNode = MapUnit.CurrentTile.GetNeighbor(Vector3.up);
-                else
+                if (Input.GetKeyUp(KeyCode.W))
                 {
-                    direction = Direction.Up;
-                    turnComplete = true;
+                    // up
+                    if (direction == Direction.Up)
+                        nextNode = MapUnit.CurrentTile.GetNeighbor(Vector3.up);
+                    else
+                    {
+                        direction = Direction.Up;
+                        turnComplete = true;
+                    }
                 }
-            }
 
-            if (Input.GetKeyUp(KeyCode.S))
-            {
-                // down
-                if (direction == Direction.Down)
-                    nextNode = MapUnit.CurrentTile.GetNeighbor(Vector3.down);
-                else
+                if (Input.GetKeyUp(KeyCode.S))
                 {
-                    direction = Direction.Down;
-                    turnComplete = true;
+                    // down
+                    if (direction == Direction.Down)
+                        nextNode = MapUnit.CurrentTile.GetNeighbor(Vector3.down);
+                    else
+                    {
+                        direction = Direction.Down;
+                        turnComplete = true;
+                    }
                 }
-            }
 
-            if (Input.GetKeyUp(KeyCode.A))
-            {
-                // left
-                if (direction == Direction.Left)
-                    nextNode = MapUnit.CurrentTile.GetNeighbor(Vector3.left);
-                else
+                if (Input.GetKeyUp(KeyCode.A))
                 {
-                    direction = Direction.Left;
-                    turnComplete = true;
+                    // left
+                    if (direction == Direction.Left)
+                        nextNode = MapUnit.CurrentTile.GetNeighbor(Vector3.left);
+                    else
+                    {
+                        direction = Direction.Left;
+                        turnComplete = true;
+                    }
                 }
-            }
 
-            if (Input.GetKeyUp(KeyCode.D))
-            {
-                // right
-                if (direction == Direction.Right)
-                    nextNode = MapUnit.CurrentTile.GetNeighbor(Vector3.right);
-                else
+                if (Input.GetKeyUp(KeyCode.D))
                 {
-                    direction = Direction.Right;
-                    turnComplete = true;
+                    // right
+                    if (direction == Direction.Right)
+                        nextNode = MapUnit.CurrentTile.GetNeighbor(Vector3.right);
+                    else
+                    {
+                        direction = Direction.Right;
+                        turnComplete = true;
+                    }
                 }
             }
+            lastFrameCount = Time.frameCount;
 
             if (Input.GetKeyUp(KeyCode.Space))
                 AttemptFireGun();

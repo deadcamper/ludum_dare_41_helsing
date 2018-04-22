@@ -13,10 +13,23 @@ public class Enemy : TurnTaker, Killable
 
     public AudioSource deathSound;
 
-    private Direction direction;
+	public GameObject liveSprite;
+	public GameObject deadSprite;
+
+	private Direction direction;
     private Player player;
 
-    private bool dead = false;
+	private bool _dead = false;
+	private bool Dead
+	{
+		get { return _dead; }
+		set
+		{
+			_dead = value;
+			liveSprite.SetActive(!value);
+			deadSprite.SetActive(value);
+		}
+	}
 
     void Awake()
     {
@@ -28,7 +41,8 @@ public class Enemy : TurnTaker, Killable
     void Start()
     {
         currentCountdown = turnCountdown;
-    }
+		Dead = false;
+	}
 
     private void Update()
     {
@@ -163,13 +177,13 @@ public class Enemy : TurnTaker, Killable
 
     public void Die()
     {
-        dead = true;
+        Dead = true;
         deathSound.Play();
         // TODO change "visual" states
     }
 
     public bool isDead()
     {
-        return dead;
+        return Dead;
     }
 }
