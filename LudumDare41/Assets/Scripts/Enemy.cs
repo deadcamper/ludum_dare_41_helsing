@@ -22,6 +22,8 @@ public class Enemy : TurnTaker, Killable
 
     public Direction startingDirection;
 
+	public bool ignoresWalls = false;
+
 	private Direction direction;
     private Player player;
 
@@ -166,15 +168,16 @@ public class Enemy : TurnTaker, Killable
         float currentMapTileScore = CalculateMapTileScore(MapUnit.CurrentTile);
         MapTile nextTile = MapUnit.CurrentTile;
 
-        foreach (MapTile mapTile in MapUnit.CurrentTile.Neighbors)
+        foreach (MapTile mapTile in MapUnit.CurrentTile.GetNeighbors(ignoresWalls))
         {
-            if (!mapTile.isValid)
+            if (!mapTile.isValid && !ignoresWalls)
                 continue; // don't consider it if it's not valid
 
             if (IsTileOccupied(mapTile))
                 continue;
 
             float score = CalculateMapTileScore(mapTile);
+			
             if (score < currentMapTileScore)
             {
                 currentMapTileScore = score;

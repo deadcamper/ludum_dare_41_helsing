@@ -33,7 +33,7 @@ public class Map : MonoBehaviour
 
 	public MapTile GetMapTile(Vector2Int coordinates)
 	{
-		//if (!Application.isPlaying)
+		if (!Application.isPlaying)
 		{
 			return FindObjectsOfType<MapTile>().FirstOrDefault(t => t.Coordinates == coordinates);
 		}
@@ -63,13 +63,6 @@ public class Map : MonoBehaviour
                     if (tileA.tileType == TileType.Exit)
                     {
                         tileA.onArriveAtTile += OnArrivedAtExit;
-                    }
-
-                    MapTile tileB = mapTiles[j];
-
-                    if (MapTile.TilesAreNeighbors(tileA, tileB))
-                    {
-                        tileA.AddNeighbor(tileB);
                     }
                 }
             }

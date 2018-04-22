@@ -5,15 +5,16 @@ using UnityEngine.SceneManagement;
 public class LevelExit : MonoBehaviour
 {
     public string nextScene;
-
+	
     public void LoadNext()
     {
-        StartCoroutine(Delay());
-    }
-
-    private IEnumerator Delay()
-    {
-        yield return new WaitForSeconds(6.0f);
-        SceneManager.LoadScene(nextScene);
+		TransitionUtil.RunFadeToAndBack(
+			new Color(0, 0, 0, 0), 
+			new Color(0, 0, 0, 1), 
+			2, 
+			2, 
+			() => { SceneManager.LoadScene(nextScene); }, 
+			() => { Destroy(gameObject); } 
+			);
     }
 }

@@ -5,6 +5,19 @@ using UnityEngine;
 
 public class Player : TurnTaker, Killable
 {
+	static Player _instance;
+	public static Player Instance
+	{
+		get
+		{
+			if (_instance == null)
+			{
+				_instance = FindObjectOfType<Player>();
+			}
+			return _instance;
+		}
+	}
+
 	public GameObject liveSprite;
 	public GameObject deadSprite;
 	public GameObject gunArmSprite;
@@ -110,7 +123,6 @@ public class Player : TurnTaker, Killable
 
     public override IEnumerator TurnLogic()
     {
-        MapTile nextNode = null;
         turnComplete = false;
 
         HUD.Show();
@@ -125,55 +137,19 @@ public class Player : TurnTaker, Killable
 
             if (lastFrameCount != Time.frameCount)
             {
-                if (Input.GetKeyUp(KeyCode.W))
-                {
-                    // up
-                    if (direction == Direction.Up)
-                        nextNode = MapUnit.CurrentTile.GetNeighbor(Vector3.up);
-                    else
-                    {
-                        direction = Direction.Up;
-                        turnComplete = true;
-                    }
-                }
+				if (Input.GetKeyDown(KeyCode.W))
+					turnComplete = ProcessDirectionalInput(Direction.Up);
 
-                if (Input.GetKeyUp(KeyCode.S))
-                {
-                    // down
-                    if (direction == Direction.Down)
-                        nextNode = MapUnit.CurrentTile.GetNeighbor(Vector3.down);
-                    else
-                    {
-                        direction = Direction.Down;
-                        turnComplete = true;
-                    }
-                }
+				if (Input.GetKeyDown(KeyCode.S))
+					turnComplete = ProcessDirectionalInput(Direction.Down);
 
-                if (Input.GetKeyUp(KeyCode.A))
-                {
-                    // left
-                    if (direction == Direction.Left)
-                        nextNode = MapUnit.CurrentTile.GetNeighbor(Vector3.left);
-                    else
-                    {
-                        direction = Direction.Left;
-                        turnComplete = true;
-                    }
-                }
+				if (Input.GetKeyDown(KeyCode.A))
+					turnComplete = ProcessDirectionalInput(Direction.Left);
 
-                if (Input.GetKeyUp(KeyCode.D))
-                {
-                    // right
-                    if (direction == Direction.Right)
-                        nextNode = MapUnit.CurrentTile.GetNeighbor(Vector3.right);
-                    else
-                    {
-                        direction = Direction.Right;
-                        turnComplete = true;
-                    }
-                }
+				if (Input.GetKeyDown(KeyCode.D))
+					turnComplete = ProcessDirectionalInput(Direction.Right);
 
-                if (Input.GetKeyUp(KeyCode.Space))
+                if (Input.GetKeyDown(KeyCode.Space))
                 {
                     if (AttemptFireGun())
                     {
@@ -183,35 +159,51 @@ public class Player : TurnTaker, Killable
                 }
             }
             lastFrameCount = Time.frameCount;
-
-            if (nextNode != null)
-            {
-                if (nextNode.isValid)
-                {
-                    MapUnit.CurrentTile = nextNode;
-                    turnComplete = true;
-                    PlayClip("walk");
-                }
-                else
-                {
-                    if (AttemptUseKey(nextNode))
-                    {
-                        // used a key! (door is now marked as valid)
-                        MapUnit.CurrentTile = nextNode;
-                        turnComplete = true;
-                    }
-                    else
-                    {
-                        nextNode = null;
-                        PlayClip("locked");
-                        GameUI.DisplayMessage("You don't have a key.");
-                    }
-                }
-            }
-
+			
             yield return null;
         }
     }
+
+	bool ProcessDirectionalInput(Direction inputDirection)
+	{
+		if (direction == inputDirection)
+			return TryMoveToTile(MapUnit.CurrentTile.GetNeighbor(direction));
+		else
+		{
+			direction = inputDirection;
+			return false;
+		}
+	}
+
+	bool TryMoveToTile(MapTile tile)
+	{
+		bool turnComplete = false;
+		if (tile != null)
+		{
+			if (tile.isValid)
+			{
+				MapUnit.CurrentTile = tile;
+				turnComplete = true;
+				PlayClip("walk");
+			}
+			else if(tile.tileType == TileType.Door)
+			{
+				if (AttemptUseKey(tile))
+				{
+					// used a key! (door is now marked as valid)
+					MapUnit.CurrentTile = tile;
+					turnComplete = true;
+				}
+				else
+				{
+					PlayClip("locked");
+					GameUI.DisplayMessage("You don't have a key.");
+				}
+			}
+		}
+		return turnComplete;
+	}
+
 
     private bool AttemptFireGun()
     {
