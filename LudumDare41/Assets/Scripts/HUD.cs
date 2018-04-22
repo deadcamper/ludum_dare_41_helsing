@@ -48,9 +48,15 @@ public class HUD : MonoBehaviour
             player.Inventory.onItemChange += OnItemChange;
         }
 
-        int val = 0;
+        int val = 0, metalVal = 0;
         player.Inventory.Items.TryGetValue(ItemType.Stake, out val);
-        stakeText.text = "Stakes: " + val;
+
+        player.Inventory.Items.TryGetValue(ItemType.MetalStake, out metalVal);
+
+        if (metalVal > 0)
+            stakeText.text = "Stakes: METAL";
+        else
+            stakeText.text = "Stakes: " + val;
 
         player.Inventory.Items.TryGetValue(ItemType.SilverBullet, out val);
         bulletsText.text = "Silver Bullets: " + val;
