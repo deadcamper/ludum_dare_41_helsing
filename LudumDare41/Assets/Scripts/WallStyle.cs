@@ -76,17 +76,18 @@ public class WallStyle : ScriptableObject
 			for (int dir = 0; dir < 4; dir++)
 			{
 				microMap = RotateMatrix<MapTile>(microMap, 3);
-
-				MapTile n = microMap[1, 2];
-				MapTile ne = microMap[2, 2];
-				MapTile e = microMap[2, 1]; ;
-				MapTile se = microMap[2, 0]; ;
-				MapTile s = microMap[1, 0];
-				MapTile sw = microMap[0, 0];
-				MapTile w = microMap[0, 1];
-				MapTile nw = microMap[0, 2];
-
-				if (n != null)
+                
+                MapTile nw = microMap[0, 2];
+                MapTile n = microMap[1, 2];
+                MapTile ne = microMap[2, 2];
+                MapTile w = microMap[0, 1];
+                /// center MapTile c = microMap[1, 1];
+                MapTile e = microMap[2, 1];
+                MapTile sw = microMap[0, 0];
+                MapTile s = microMap[1, 0];
+                MapTile se = microMap[2, 0];
+                
+                if (n != null)
 				{
 					if(n.tileType == TileType.Wall)
 					{
@@ -99,16 +100,16 @@ public class WallStyle : ScriptableObject
 						spriteInfos.Add(new SpriteInfo(Quaternion.Euler(0, 0, rotations[dir]), LockedDoorFrame, sortingLayer, 5));
 					}
 				}
-				//if (n == null || n.tileType == TileType.Wall || ne == null || ne.tileType == TileType.Wall)
-				{
-					if ((e != null && e.tileType != TileType.Wall && e.tileType != TileType.Door))
+                //if (n == null || n.tileType == TileType.Wall || ne == null || ne.tileType == TileType.Wall)
+                {
+                    if (TileMatchesTileType(e, TileType.Floor, TileType.Exit))
 					{
 						spriteInfos.Add(new SpriteInfo(Quaternion.Euler(0, 0, rotations[dir]), rightPiece, sortingLayer, 3));
 					}
 				}
 				//if (n == null || n.tileType == TileType.Wall || nw == null || nw.tileType == TileType.Wall)
 				{
-					if ((w != null && w.tileType != TileType.Wall && w.tileType != TileType.Door))
+					if (TileMatchesTileType(w, TileType.Floor, TileType.Exit))
 					{
 						spriteInfos.Add(new SpriteInfo(Quaternion.Euler(0, 0, rotations[dir]), leftPiece, sortingLayer, 3));
 					}
@@ -122,6 +123,14 @@ public class WallStyle : ScriptableObject
 		return spriteInfos;
 
 	}
+
+    private bool TileMatchesTileType(MapTile tile, params TileType?[] types)
+    {
+        if (tile == null)
+            return types.Contains(null);
+
+        return types.Contains(tile.tileType);
+    }
 
 	static T[,] RotateMatrix<T>(T[,] matrix, int n) {
 		T[,] ret = new T[n, n];
