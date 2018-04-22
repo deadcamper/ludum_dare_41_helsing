@@ -135,8 +135,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soundAttack: {fileID: 82125181551530000}
-  turnCountdown: 1
-  tileCount: 1
+  turnCountdown: 3
+  tileCount: 2
 --- !u!114 &114844956846292850
 MonoBehaviour:
   m_ObjectHideFlags: 1

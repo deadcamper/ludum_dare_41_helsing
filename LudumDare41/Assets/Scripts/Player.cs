@@ -1,10 +1,20 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : TurnTaker, Killable
 {
     public Game game;
     public Direction direction;
+
+    [System.Serializable]
+    public struct AudioLibraryEntry
+    {
+        public string name;
+        public AudioClip clip;
+    }
+    public List<AudioLibraryEntry> audioLibrary;
+    public AudioSource audioSource;
 
     public MapUnit MapUnit { get; private set; }
 
@@ -20,6 +30,30 @@ public class Player : TurnTaker, Killable
         Inventory.Items.Add(ItemType.Stake, 1);
         Inventory.Items.Add(ItemType.SilverBullet, 6);
         Inventory.Items.Add(ItemType.Key, 0);
+        Inventory.onItemChange += OnItemAdded;
+    }
+
+    public void PlayClip(string name)
+    {
+        foreach (AudioLibraryEntry entry in audioLibrary)
+        {
+            if (entry.name.Equals(name))
+            {
+                audioSource.clip = entry.clip;
+                break;
+            }
+        }
+
+        audioSource.Play();
+    }
+
+    private void OnItemAdded(ItemType itemType, int qty)
+    {
+        // pickup an item
+        if (qty > 0)
+        {
+            PlayClip("collect");
+        }
     }
 
     private void Update()
@@ -172,6 +206,7 @@ public class Player : TurnTaker, Killable
 
     public void Die()
     {
+        PlayClip("death");
         dead = true;
     }
 
