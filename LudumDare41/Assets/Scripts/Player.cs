@@ -70,7 +70,15 @@ public class Player : TurnTaker, Killable
             if (entry.name.Equals(name))
             {
                 if (!entry.audioSource.isPlaying)
+                {
+                    // pitch shift for variations
+                    if (name.Equals("walk"))
+                    {
+                        entry.audioSource.pitch = 1.0f + Random.value;
+                    }
+
                     entry.audioSource.Play();
+                }
                 break;
             }
         }
@@ -95,6 +103,8 @@ public class Player : TurnTaker, Killable
     {
         MapTile nextNode = null;
         turnComplete = false;
+
+        HUD.Show();
 
         while (!turnComplete)
         {

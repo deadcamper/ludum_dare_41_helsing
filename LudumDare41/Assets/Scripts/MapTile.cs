@@ -94,9 +94,9 @@ public class MapTile : MonoBehaviour
 				Destroy(child.gameObject);
 			}
 
-				if (WallStyle.Instance != null)
+		if (WallStyle.Instance != null)
 		{
-			var spriteInfos = WallStyle.Instance.GetWallSprites(map, Coordinates);
+            var spriteInfos = WallStyle.Instance.GetWallSprites(map, Coordinates);
 			foreach (var spriteInfo in spriteInfos)
 			{
 				AddGeneratedDecoratorSprite(spriteInfo.sprite, spriteInfo.rotation, spriteInfo.sortingLayer, spriteInfo.orderInLayer);

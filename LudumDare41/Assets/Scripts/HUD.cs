@@ -13,6 +13,32 @@ public class HUD : MonoBehaviour
 
     public AudioSource audioSource;
 
+    public static void Hide()
+    {
+        HUD hud = FindObjectOfType<HUD>();
+        if (hud)
+        {
+            Text[] displays = hud.GetComponentsInChildren<Text>();
+            foreach (Text display in displays)
+            {
+                display.enabled = false;
+            }
+        }
+    }
+
+    public static void Show()
+    {
+        HUD hud = FindObjectOfType<HUD>();
+        if (hud)
+        {
+            Text[] displays = hud.GetComponentsInChildren<Text>();
+            foreach (Text display in displays)
+            {
+                display.enabled = true;
+            }
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
