@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 615715546a1973d449cac3f748b60f04
+timeCreated: 1524367785
+licenseType: Pro
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 128
+  forceTextureCase: -1
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: DigiCastle
+  fontNames:
+  - DigiCastle
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 2
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
