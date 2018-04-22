@@ -13,6 +13,11 @@ public class HUD : MonoBehaviour
 
     public AudioSource audioSource;
 
+    private void Awake()
+    {
+        Inventory.GetInstance().onItemChange += OnItemChange;
+    }
+
     public static void Hide()
     {
         HUD hud = FindObjectOfType<HUD>();
@@ -45,16 +50,15 @@ public class HUD : MonoBehaviour
         if (player == null)
         {
             player = FindObjectOfType<Player>();
-            player.Inventory.onItemChange += OnItemChange;
         }
 
         int val = 0, metalVal = 0;
-        player.Inventory.Items.TryGetValue(ItemType.Stake, out val);
+        Inventory.GetInstance().Items.TryGetValue(ItemType.Stake, out val);
 
-        player.Inventory.Items.TryGetValue(ItemType.MetalStake, out metalVal);
+        Inventory.GetInstance().Items.TryGetValue(ItemType.MetalStake, out metalVal);
         stakeText.text = (metalVal > 0) ? "METAL" : val.ToString();
 
-        player.Inventory.Items.TryGetValue(ItemType.SilverBullet, out val);
+        Inventory.GetInstance().Items.TryGetValue(ItemType.SilverBullet, out val);
         bulletsText.text = val.ToString();
     }
 

@@ -43,7 +43,6 @@ public class Player : TurnTaker, Killable
     public MapUnit MapUnit { get; private set; }
 
     private bool turnComplete = false;
-    public Inventory Inventory { get; private set; }
 
 	private bool _dead;
 	private bool Dead
@@ -60,13 +59,8 @@ public class Player : TurnTaker, Killable
     private void Awake()
     {
         MapUnit = new MapUnit(transform.position, this);
-        Inventory = new Inventory();
-        Inventory.Items.Add(ItemType.Stake, 1);
-        Inventory.Items.Add(ItemType.SilverBullet, 0);
-        Inventory.Items.Add(ItemType.Key, 0);
-        Inventory.Items.Add(ItemType.MetalStake, 0);
         Dead = false;
-        Inventory.onItemChange += UpdatePlayerSpritesWithInventory;
+        Inventory.GetInstance().onItemChange += UpdatePlayerSpritesWithInventory;
         UpdatePlayerSpritesWithInventory(ItemType.Key, 0); //Force trigger to update player
 
         if (game == null)
@@ -77,8 +71,11 @@ public class Player : TurnTaker, Killable
 
     private void UpdatePlayerSpritesWithInventory(ItemType t, int q)
     {
-        stakeArmSprite.SetActive(Inventory.HasItem(ItemType.MetalStake) || Inventory.HasItem(ItemType.Stake));
-        gunArmSprite.SetActive(Inventory.Items.Any(kvp => kvp.Key == ItemType.SilverBullet && kvp.Value > 0));
+        if (stakeArmSprite)
+            stakeArmSprite.SetActive(Inventory.GetInstance().HasItem(ItemType.MetalStake) || Inventory.GetInstance().HasItem(ItemType.Stake));
+
+        if (gunArmSprite)
+            gunArmSprite.SetActive(Inventory.GetInstance().Items.Any(kvp => kvp.Key == ItemType.SilverBullet && kvp.Value > 0));
     }
 
     public void PlayClip(string name, bool isPlayingOverride = false)
@@ -207,7 +204,7 @@ public class Player : TurnTaker, Killable
 
     private bool AttemptFireGun()
     {
-        if (Inventory.RemoveItem(ItemType.SilverBullet, 1))
+        if (Inventory.GetInstance().RemoveItem(ItemType.SilverBullet, 1))
         {
             muzzleFlash.Fire();
             PlayClip("gun", true);
@@ -228,7 +225,7 @@ public class Player : TurnTaker, Killable
         switch(nextNode.tileType)
         {
             case TileType.Door: // TODO as we add more "door" types / "key" types, we gotta account for that here d
-                if (Inventory.RemoveItem(ItemType.Key, 1))
+                if (Inventory.GetInstance().RemoveItem(ItemType.Key, 1))
                 {
                     PlayClip("door");
                     nextNode.isValid = true;

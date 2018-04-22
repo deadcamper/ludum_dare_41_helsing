@@ -25,7 +25,7 @@ public class CollectibleItem : MonoBehaviour
         if (mapUnit == player.MapUnit)
         {
             Destroy(gameObject);
-            player.Inventory.AddItem(itemType, qty);
+            Inventory.GetInstance().AddItem(itemType, qty);
             mapTile.onArriveAtTile -= OnPlayerArriveAtTile;
             OnCollect.Invoke();
         }

@@ -15,7 +15,22 @@ public class Inventory
 
     public Dictionary<ItemType, int> Items { get; private set; }
 
-    public Inventory()
+    private static Inventory instance;
+    public static Inventory GetInstance()
+    {
+        if (instance == null)
+        {
+            instance = new Inventory();
+            instance.Items.Add(ItemType.Stake, 1);
+            instance.Items.Add(ItemType.SilverBullet, 0);
+            instance.Items.Add(ItemType.Key, 0);
+            instance.Items.Add(ItemType.MetalStake, 0);
+        }
+
+        return instance;
+    }
+
+    private Inventory()
     {
         Items = new Dictionary<ItemType, int>();
     }
