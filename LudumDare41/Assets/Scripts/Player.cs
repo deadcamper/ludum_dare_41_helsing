@@ -1,9 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Player : TurnTaker, Killable
 {
+	public GameObject liveSprite;
+	public GameObject deadSprite;
+	public GameObject gunArmSprite;
+	public GameObject stakeArmSprite;
+
+
+
     public Game game;
     public Direction direction;
 
@@ -20,7 +28,17 @@ public class Player : TurnTaker, Killable
     private bool turnComplete = false;
     public Inventory Inventory { get; private set; }
 
-    private bool dead = false;
+	private bool _dead;
+	private bool Dead
+	{
+		get { return _dead; }
+		set
+		{
+			_dead = value;
+			liveSprite.SetActive(!value);
+			deadSprite.SetActive(value);
+		}
+	}
 
     private void Awake()
     {
@@ -29,6 +47,13 @@ public class Player : TurnTaker, Killable
         Inventory.Items.Add(ItemType.Stake, 1);
         Inventory.Items.Add(ItemType.SilverBullet, 6);
         Inventory.Items.Add(ItemType.Key, 0);
+		Dead = false;
+		Inventory.onItemChange += (a, b) =>
+		{
+			stakeArmSprite.SetActive(Inventory.Items.Any(kvp => kvp.Key == ItemType.Stake        && kvp.Value > 0));
+			gunArmSprite.SetActive(  Inventory.Items.Any(kvp => kvp.Key == ItemType.SilverBullet && kvp.Value > 0));
+		};
+
     }
 
     public void PlayClip(string name)
@@ -175,11 +200,11 @@ public class Player : TurnTaker, Killable
     public void Die()
     {
         PlayClip("death");
-        dead = true;
+        Dead = true;
     }
 
     public bool isDead()
     {
-        return dead;
+        return Dead;
     }
 }

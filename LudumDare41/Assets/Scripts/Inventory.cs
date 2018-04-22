@@ -10,7 +10,7 @@ public enum ItemType
 public class Inventory
 {
     public delegate void OnItemChange(ItemType itemType, int qty);
-    public OnItemChange onItemChange;
+    public event OnItemChange onItemChange;
 
     public Dictionary<ItemType, int> Items { get; private set; }
 
