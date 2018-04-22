@@ -142,6 +142,9 @@ public class Player : TurnTaker, Killable
                 }
             }
 
+            if (Input.GetKeyUp(KeyCode.Space))
+                AttemptFireGun();
+
             if (nextNode != null)
             {
                 if (nextNode.isValid)
@@ -161,12 +164,18 @@ public class Player : TurnTaker, Killable
                     else
                     {
                         nextNode = null;
+                        GameUI.DisplayMessage("You don't have a key.");
                     }
                 }
             }
 
             yield return null;
         }
+    }
+
+    private bool AttemptFireGun()
+    {
+        return false;
     }
 
     private bool AttemptUseKey(MapTile nextNode)
