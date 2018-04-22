@@ -41,6 +41,8 @@ public class TurnManager : MonoBehaviour
                 {
                     yield return null; // wait for the turn to be done
                 } while (!turnTaker.TurnComplete());
+
+                EvaluateKills();
             }
 
             //Append new turn takers
@@ -55,6 +57,30 @@ public class TurnManager : MonoBehaviour
             {
                 Debug.LogError("Breaking the turn loop: no turn takers");
                 break;
+            }
+        }
+    }
+
+    private void EvaluateKills()
+    {
+        Player player = FindObjectOfType<Player>();
+        Enemy[] enemies = FindObjectsOfType<Enemy>();
+        foreach (Enemy enemy in enemies)
+        {
+            if (enemy.isDead())
+                continue;
+
+            if (enemy.MapUnit.CurrentTile == player.MapUnit.CurrentTile)
+            {
+                // does the player have a stake?
+                if (Inventory.GetInstance().HasItem(ItemType.MetalStake) || Inventory.GetInstance().RemoveItem(ItemType.Stake, 1))
+                {
+                    enemy.Die();
+                }
+                else
+                {
+                    player.Die();
+                }
             }
         }
     }

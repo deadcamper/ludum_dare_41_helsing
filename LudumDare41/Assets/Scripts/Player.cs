@@ -174,13 +174,13 @@ public class Player : TurnTaker, Killable
 
 	bool TryMoveToTile(MapTile tile)
 	{
-		bool turnComplete = false;
+		bool complete = false;
 		if (tile != null)
 		{
 			if (tile.isValid)
 			{
 				MapUnit.CurrentTile = tile;
-				turnComplete = true;
+                complete = true;
 				PlayClip("walk");
 			}
 			else if(tile.tileType == TileType.Door)
@@ -189,7 +189,7 @@ public class Player : TurnTaker, Killable
 				{
 					// used a key! (door is now marked as valid)
 					MapUnit.CurrentTile = tile;
-					turnComplete = true;
+                    complete = true;
 				}
 				else
 				{
@@ -198,7 +198,7 @@ public class Player : TurnTaker, Killable
 				}
 			}
 		}
-		return turnComplete;
+        return complete;
 	}
 
 

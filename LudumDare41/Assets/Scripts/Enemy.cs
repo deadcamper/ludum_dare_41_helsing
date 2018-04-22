@@ -152,7 +152,6 @@ public class Enemy : TurnTaker, Killable
                 }
 
                 pathAnimationQueue.Add(new PathAnimationEntry(nextTile, dir));
-				nextTile.onArriveAtTile += OnMoveToTile;
 				MapUnit.CurrentTile = nextTile;
 				recentlyVisited.Add(MapUnit.CurrentTile);
 				if (recentlyVisited.Count >= backtrackHistorySize)
@@ -163,27 +162,6 @@ public class Enemy : TurnTaker, Killable
         currentCountdown--;
 
         yield return null;
-    }
-
-    private void OnMoveToTile(MapTile mapTile, MapUnit mapUnit)
-    {
-        mapTile.onArriveAtTile -= OnMoveToTile;
-
-        MapUnit playerUnit = player.MapUnit;
-        MapTile playerTile = playerUnit.CurrentTile;
-
-        if (MapUnit.CurrentTile == playerTile)
-        {
-            if (Inventory.GetInstance().HasItem(ItemType.MetalStake) || Inventory.GetInstance().RemoveItem(ItemType.Stake, 1))
-            {
-                // this enemy dies!
-                Die();
-            }
-            else
-            {
-                player.Die();
-            }
-        }
     }
 
     private Direction GetDirectionBetween(Vector3 pos1, Vector3 pos2)

@@ -75,10 +75,12 @@ public class HUD : MonoBehaviour
                 }
                 else
                 {
-                    Destroy(keyImages[itemType]);
+                    Destroy(keyImages[itemType].gameObject);
                     keyImages.Remove(itemType);
                 }
                 break;
         }
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
     }
 }
