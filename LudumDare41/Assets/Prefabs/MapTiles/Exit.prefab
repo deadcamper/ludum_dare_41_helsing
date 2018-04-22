@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4112162633288680}
   - component: {fileID: 212090708259222542}
   - component: {fileID: 114870053488735204}
+  - component: {fileID: 114762631152680888}
   m_Layer: 0
   m_Name: Exit
   m_TagString: Untagged
@@ -41,6 +42,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114762631152680888
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1895073554188328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15b4083fb93984c218435b7454d01a98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextScene: 
 --- !u!114 &114870053488735204
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -52,6 +65,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfc6c6dbd3dbe462aa7cdbf078db588f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onArriveAtTileUnity:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114762631152680888}
+        m_MethodName: LoadNext
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
   tileType: 3
   isValid: 1
 --- !u!212 &212090708259222542

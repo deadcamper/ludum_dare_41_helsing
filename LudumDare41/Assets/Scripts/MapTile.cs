@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [System.Serializable]
 public enum TileType
@@ -155,6 +156,7 @@ public class MapTile : MonoBehaviour
 
     public delegate void OnArriveAtTile(MapTile mapTile, MapUnit mapUnit);
     public OnArriveAtTile onArriveAtTile;
+    public UnityEvent onArriveAtTileUnity;
 
     public TileType tileType;
     public bool isValid;
