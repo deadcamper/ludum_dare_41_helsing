@@ -46,3 +46,21 @@ public struct Vector2Int
 		return false;
 	}
 }
+public static class Direction_Vector2Int_EXT
+{
+	public static Vector2Int ToVector2Int(this Direction direction, int distance = 1)
+	{
+		switch (direction)
+		{
+			case Direction.Up:
+				return new Vector2Int(0, distance);
+			case Direction.Down:
+				return new Vector2Int(0, -distance);
+			case Direction.Right:
+				return new Vector2Int(distance, 0);
+			case Direction.Left:
+				return new Vector2Int(-distance, 0);
+		}
+		throw new System.NotImplementedException();
+	}
+}

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -163,14 +165,19 @@ public class MapTile : MonoBehaviour
 
     public WallStyle wallStyle;
 
-    public List<MapTile> Neighbors { get; private set; }
-    public void AddNeighbor(MapTile tile)
-    {
-        if (Neighbors == null)
-            Neighbors = new List<MapTile>();
-
-        Neighbors.Add(tile);
-    }
+    public List<MapTile> GetNeighbors(bool includeWalls)
+	{
+		IEnumerable<MapTile> neighbors = (Enum.GetValues(typeof(Direction)) as Direction[]).Select(dir => GetNeighbor(dir));
+		if (!includeWalls)
+		{
+			neighbors = neighbors
+				.Where(tile =>
+					tile != null
+					&& tile.tileType != TileType.Wall
+				);
+		}
+		return neighbors.ToList();
+	}
 
     public MapTile GetNeighbor(Vector3 offset)
     {
@@ -196,38 +203,7 @@ public class MapTile : MonoBehaviour
 
     public MapTile GetNeighbor(Direction direction)
     {
-        foreach (MapTile neighbor in Neighbors)
-        {
-            switch (direction)
-            {
-                case Direction.Up:
-                    if (neighbor.transform.position.y > transform.position.y)
-                    {
-                        return neighbor;
-                    }
-                    break;
-                case Direction.Down:
-                    if (neighbor.transform.position.y < transform.position.y)
-                    {
-                        return neighbor;
-                    }
-                    break;
-                case Direction.Left:
-                    if (neighbor.transform.position.x < transform.position.x)
-                    {
-                        return neighbor;
-                    }
-                    break;
-                case Direction.Right:
-                    if (neighbor.transform.position.x > transform.position.x)
-                    {
-                        return neighbor;
-                    }
-                    break;
-            }
-        }
-
-        return null;
+		return Map.Instance.GetMapTile(Coordinates + direction.ToVector2Int());
     }
 
 	private void Update()
