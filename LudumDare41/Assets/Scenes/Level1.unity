@@ -3243,7 +3243,7 @@ Prefab:
     - target: {fileID: 114762631152680888, guid: 64474d6fa45614ef488bfd0790d35429,
         type: 2}
       propertyPath: nextScene
-      value: Level1
+      value: Level2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 64474d6fa45614ef488bfd0790d35429, type: 2}
@@ -6972,7 +6972,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   light_radius: 130
-  wallStyle: {fileID: 11400000, guid: 3d6302c9543efb641a44c8c8039c0039, type: 2}
+  enemy_light_radius: -1
+  baseWallStyle: {fileID: 11400000, guid: 3d6302c9543efb641a44c8c8039c0039, type: 2}
 --- !u!1001 &1492945092
 Prefab:
   m_ObjectHideFlags: 0
