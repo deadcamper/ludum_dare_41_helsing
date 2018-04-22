@@ -18,6 +18,8 @@ public class MapUnit
             {
                 currentTile.onArriveAtTile(value, this);
             }
+
+            currentTile.onArriveAtTileUnity.Invoke();
         } 
     }
 
