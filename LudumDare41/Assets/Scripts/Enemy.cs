@@ -7,9 +7,13 @@ public class Enemy : TurnTaker, Killable
     private int backtrackHistorySize = 4;
     public int turnCountdown;
     public int tileCount = 1;
+    public float playerWeight = 1.0f;
+    public float backtrackingWeight = 1.7f;
     private int currentCountdown;
     public MapUnit MapUnit { get; private set; }
     private List<MapTile> recentlyVisited = new List<MapTile>();
+    private List<Vector3> pathAnimationQueue = new List<Vector3>();
+    private Vector3 currentPathTarget;
 
     public AudioSource deathSound;
 
@@ -49,10 +53,21 @@ public class Enemy : TurnTaker, Killable
 
     private void Update()
     {
-        if (MapUnit.CurrentTile != null)
+        if (pathAnimationQueue.Count > 0)
+        {
+            if (currentPathTarget == null)
+            {
+                currentPathTarget = pathAnimationQueue[0];
+                pathAnimationQueue.RemoveAt(0);
+            }
+        }
+
+        if (currentPathTarget != null)
+            transform.position = Vector3.Lerp(transform.position, MapUnit.CurrentTile.transform.position, 0.02f);
+        /*if (MapUnit.CurrentTile != null)
         {
             transform.position = Vector3.Lerp(transform.position, MapUnit.CurrentTile.transform.position, 0.2f);
-        }
+        }*/
         transform.rotation = Quaternion.Euler(0,0, Mathf.LerpAngle(transform.rotation.eulerAngles.z, DirectionUtil.GetSpriteRotationForDirection(direction).eulerAngles.z, 0.2f));
     }
 
@@ -73,24 +88,50 @@ public class Enemy : TurnTaker, Killable
 
             for (int i = 0; i < tileCount; ++i)
             {
-                // pick a node to move toward
                 MapTile nextTile = PickATile();
-                nextTile.onArriveAtTile += OnMoveToTile;
 
-                // direction
-                if (nextTile != MapUnit.CurrentTile)
-                    direction = GetDirectionBetween(MapUnit.CurrentTile.transform.position, nextTile.transform.position);
+                // error checking
+                if (nextTile != null)
+                {
+                    // direction
+                    if (nextTile != MapUnit.CurrentTile)
+                        direction = GetDirectionBetween(MapUnit.CurrentTile.transform.position, nextTile.transform.position);
 
-                MapUnit.CurrentTile = nextTile;
-                recentlyVisited.Add(MapUnit.CurrentTile);
-                if (recentlyVisited.Count >= backtrackHistorySize)
-                    recentlyVisited.RemoveAt(0);
+                    // move to next node
+                    pathAnimationQueue.Add(nextTile.transform.position);
+                    nextTile.onArriveAtTile += OnMoveToTile;
+                    MapUnit.CurrentTile = nextTile;
+                    recentlyVisited.Add(MapUnit.CurrentTile);
+                    if (recentlyVisited.Count >= backtrackHistorySize)
+                        recentlyVisited.RemoveAt(0);
+                }
             }
         }
 
         currentCountdown--;
 
         yield return null;
+    }
+
+    private void OnMoveToTile(MapTile mapTile, MapUnit mapUnit)
+    {
+        mapTile.onArriveAtTile -= OnMoveToTile;
+
+        MapUnit playerUnit = player.MapUnit;
+        MapTile playerTile = playerUnit.CurrentTile;
+
+        if (MapUnit.CurrentTile == playerTile)
+        {
+            if (player.Inventory.HasItem(ItemType.MetalStake) || player.Inventory.RemoveItem(ItemType.Stake, 1))
+            {
+                // this enemy dies!
+                Die();
+            }
+            else
+            {
+                player.Die();
+            }
+        }
     }
 
     private Direction GetDirectionBetween(Vector3 pos1, Vector3 pos2)
@@ -158,38 +199,17 @@ public class Enemy : TurnTaker, Killable
         return false;
     }
 
-    private void OnMoveToTile(MapTile mapTile, MapUnit mapUnit)
-    {
-        mapTile.onArriveAtTile -= OnMoveToTile;
-
-        MapUnit playerUnit = player.MapUnit;
-        MapTile playerTile = playerUnit.CurrentTile;
-
-        if (MapUnit.CurrentTile == playerTile)
-        {
-            if (player.Inventory.HasItem(ItemType.MetalStake) || player.Inventory.RemoveItem(ItemType.Stake, 1))
-            {
-                // this enemy dies!
-                Die();
-            }
-            else
-            {
-                player.Die();
-            }
-        }
-    }
-
     private float CalculateMapTileScore(MapTile mapTile)
     {
         float score = 0;
 
         // how close is this tile to the player?
-        score += Vector3.Distance(player.transform.position, mapTile.transform.position);
+        score += Vector3.Distance(player.transform.position, mapTile.transform.position) * playerWeight;
 
         // consider is this backtracking?
         if (recentlyVisited.Contains(mapTile))
         {
-            score *= 1.7f;
+            score *= backtrackingWeight;
         }
 
         return score;
