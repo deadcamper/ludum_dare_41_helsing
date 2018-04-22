@@ -43,6 +43,7 @@ public class Enemy : TurnTaker, Killable
     {
         player = FindObjectOfType<Player>();
         MapUnit = new MapUnit(transform.position, this);
+        currentPathTarget = transform.position;
     }
 
     // Use this for initialization
@@ -57,25 +58,33 @@ public class Enemy : TurnTaker, Killable
     {
         if (pathAnimationQueue.Count > 0)
         {
-            if (currentPathTarget == null)
+            if (currentPathTarget == null || AtCurrentPathTarget())
             {
-                currentPathTarget = pathAnimationQueue[0];
-                pathAnimationQueue.RemoveAt(0);
+                int index = 0;
+                currentPathTarget = pathAnimationQueue[index];
+                pathAnimationQueue.RemoveAt(index);
+                direction = GetDirectionBetween(transform.position, currentPathTarget);
             }
         }
 
         if (currentPathTarget != null)
-            transform.position = Vector3.Lerp(transform.position, MapUnit.CurrentTile.transform.position, 0.02f);
-        /*if (MapUnit.CurrentTile != null)
         {
-            transform.position = Vector3.Lerp(transform.position, MapUnit.CurrentTile.transform.position, 0.2f);
-        }*/
-        transform.rotation = Quaternion.Euler(0,0, Mathf.LerpAngle(transform.rotation.eulerAngles.z, DirectionUtil.GetSpriteRotationForDirection(direction).eulerAngles.z, 0.2f));
+            transform.position = Vector3.Lerp(transform.position, currentPathTarget, 0.2f);
+            transform.rotation = Quaternion.Euler(0, 0, Mathf.LerpAngle(transform.rotation.eulerAngles.z, DirectionUtil.GetSpriteRotationForDirection(direction).eulerAngles.z, 0.6f));
+        }
+    }
+
+    private bool AtCurrentPathTarget()
+    {
+        if (currentPathTarget != null)
+            return Vector3.Distance(transform.position, currentPathTarget) <= 1.0f;
+
+        return false;
     }
 
     public override bool TurnComplete()
     {
-        return true;
+        return (currentPathTarget == null) ? true : (pathAnimationQueue.Count == 0);
     }
 
     public override IEnumerator TurnLogic()
@@ -95,10 +104,6 @@ public class Enemy : TurnTaker, Killable
                 // error checking
                 if (nextTile != null)
                 {
-                    // direction
-                    if (nextTile != MapUnit.CurrentTile)
-                        direction = GetDirectionBetween(MapUnit.CurrentTile.transform.position, nextTile.transform.position);
-
                     // move to next node
                     pathAnimationQueue.Add(nextTile.transform.position);
                     nextTile.onArriveAtTile += OnMoveToTile;
@@ -138,8 +143,8 @@ public class Enemy : TurnTaker, Killable
 
     private Direction GetDirectionBetween(Vector3 pos1, Vector3 pos2)
     {
-        float diffX = pos1.x - pos2.x;
-        float diffY = pos1.y - pos2.y;
+        int diffX = Mathf.RoundToInt(pos1.x - pos2.x);
+        int diffY = Mathf.RoundToInt(pos1.y - pos2.y);
 
         if (diffX < 0)
         {

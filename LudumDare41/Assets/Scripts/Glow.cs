@@ -13,7 +13,7 @@ public class Glow : MonoBehaviour
     {
         if (toggle)
         {
-            image.color = Color.Lerp(image.color, Color.white, flicker);
+            image.color = Color.Lerp(image.color, new Color(1, 1, 1, 0.7f), flicker);
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, flicker);
 
             if (transform.localScale.x <= 0.7f)
@@ -23,7 +23,7 @@ public class Glow : MonoBehaviour
         }
         else
         {
-            image.color = Color.Lerp(image.color, new Color(1, 1, 1, 0.6f), flicker);
+            image.color = Color.Lerp(image.color, new Color(1, 1, 1, 0.5f), flicker);
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * 1.2f, flicker);
 
             if (transform.localScale.x >= 1.1f)
