@@ -281,11 +281,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e953a39dc075340d48678891a82cc1ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turnCountdown: 1
+  turnCountdown: 2
   tileCount: 1
   deathSound: {fileID: 82545443289828550}
   liveSprite: {fileID: 1604419619345390}
   deadSprite: {fileID: 1920945509293832}
+  startingDirection: 0
 --- !u!212 &212015485262535466
 SpriteRenderer:
   m_ObjectHideFlags: 1

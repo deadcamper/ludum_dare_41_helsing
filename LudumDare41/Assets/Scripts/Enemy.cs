@@ -78,7 +78,8 @@ public class Enemy : TurnTaker, Killable
                 nextTile.onArriveAtTile += OnMoveToTile;
 
                 // direction
-                direction = GetDirectionBetween(MapUnit.CurrentTile.transform.position, nextTile.transform.position);
+                if (nextTile != MapUnit.CurrentTile)
+                    direction = GetDirectionBetween(MapUnit.CurrentTile.transform.position, nextTile.transform.position);
 
                 MapUnit.CurrentTile = nextTile;
                 recentlyVisited.Add(MapUnit.CurrentTile);
@@ -129,6 +130,9 @@ public class Enemy : TurnTaker, Killable
             if (!mapTile.isValid)
                 continue; // don't consider it if it's not valid
 
+            if (IsTileOccupied(mapTile))
+                continue;
+
             float score = CalculateMapTileScore(mapTile);
             if (score < currentMapTileScore)
             {
@@ -138,6 +142,20 @@ public class Enemy : TurnTaker, Killable
         }
 
         return nextTile;
+    }
+
+    private bool IsTileOccupied(MapTile mapTile)
+    {
+        Enemy[] turnTakers = FindObjectsOfType<Enemy>();
+
+        foreach (Enemy tt in turnTakers)
+        {
+            if (tt == this)
+                continue;
+            if (tt.MapUnit.CurrentTile == mapTile)
+                return true;
+        }
+        return false;
     }
 
     private void OnMoveToTile(MapTile mapTile, MapUnit mapUnit)
