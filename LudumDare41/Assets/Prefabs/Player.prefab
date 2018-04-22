@@ -276,7 +276,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1413906060472474}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 64, y: 128, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 1}
   m_Children:
   - {fileID: 4992639575481920}
@@ -291,8 +291,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1867614400014388}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0698, y: -0.1493, z: 0}
-  m_LocalScale: {x: 0.06, y: 0.13, z: 1}
+  m_LocalPosition: {x: 0.069, y: -0.15, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4992639575481920}
   m_RootOrder: 6
@@ -826,7 +826,7 @@ MonoBehaviour:
   muzzleFlash: {fileID: 114953357179995396}
   game: {fileID: 0}
   forceCamera: 1
-  direction: 0
+  direction: 3
   audioLibrary:
   - name: win
     audioSource: {fileID: 82260245937037434}
@@ -1048,10 +1048,10 @@ SpriteRenderer:
   m_SortingLayerID: 1034357435
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 8555630024d034dec8ce2406de3c623a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4819c542aafd0cc4e925e09cb6a270a8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
-  m_FlipY: 1
+  m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1.28, y: 1.28}
   m_AdaptiveModeThreshold: 0.5
