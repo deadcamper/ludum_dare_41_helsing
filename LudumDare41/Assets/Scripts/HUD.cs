@@ -18,10 +18,10 @@ public class HUD : MonoBehaviour
         HUD hud = FindObjectOfType<HUD>();
         if (hud)
         {
-            Text[] displays = hud.GetComponentsInChildren<Text>();
-            foreach (Text display in displays)
+            int childCount = hud.transform.childCount;
+            for (int i = 0; i < childCount; ++i)
             {
-                display.enabled = false;
+                hud.transform.GetChild(i).gameObject.SetActive(false);
             }
         }
     }
@@ -31,10 +31,10 @@ public class HUD : MonoBehaviour
         HUD hud = FindObjectOfType<HUD>();
         if (hud)
         {
-            Text[] displays = hud.GetComponentsInChildren<Text>();
-            foreach (Text display in displays)
+            int childCount = hud.transform.childCount;
+            for (int i = 0; i < childCount; ++i)
             {
-                display.enabled = true;
+                hud.transform.GetChild(i).gameObject.SetActive(true);
             }
         }
     }
@@ -52,14 +52,10 @@ public class HUD : MonoBehaviour
         player.Inventory.Items.TryGetValue(ItemType.Stake, out val);
 
         player.Inventory.Items.TryGetValue(ItemType.MetalStake, out metalVal);
-
-        if (metalVal > 0)
-            stakeText.text = "Stakes: METAL";
-        else
-            stakeText.text = "Stakes: " + val;
+        stakeText.text = (metalVal > 0) ? "METAL" : val.ToString();
 
         player.Inventory.Items.TryGetValue(ItemType.SilverBullet, out val);
-        bulletsText.text = "Silver Bullets: " + val;
+        bulletsText.text = val.ToString();
     }
 
     private void OnItemChange(ItemType itemType, int qty)

@@ -1,8 +1,9 @@
 ﻿<Properties StartupConfiguration="{A8A30DD4-31DC-9A41-F887-4774CD76B9E9}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/HUD.cs">
     <Files>
       <File FileName="Assets/Scripts/TurnManager.cs" Line="55" Column="14" />
       <File FileName="Assets/Scripts/Enemy.cs" Line="72" Column="10" />
+      <File FileName="Assets/Scripts/HUD.cs" Line="59" Column="13" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
