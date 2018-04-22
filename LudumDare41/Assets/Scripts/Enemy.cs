@@ -37,7 +37,7 @@ public class Enemy : TurnTaker, Killable
             transform.position = Vector3.Lerp(transform.position, MapUnit.CurrentTile.transform.position, 0.2f);
         }
 
-        transform.rotation = Quaternion.Lerp(transform.rotation, DirectionUtil.GetSpriteRotationForDirection(direction), 0.2f);
+        transform.rotation = Quaternion.Euler(0,0, Mathf.LerpAngle(transform.rotation.eulerAngles.z, DirectionUtil.GetSpriteRotationForDirection(direction).eulerAngles.z, 0.2f));
     }
 
     public override bool TurnComplete()
