@@ -17,11 +17,19 @@ public class WallStyle : ScriptableObject
 			return _instance;
 		}
 	}
+	public Sprite floor;
+	public Sprite fill;
 
 	public Sprite wall;
 	public Sprite leftPiece;
 	public Sprite rightPiece;
-	
+
+
+	public Sprite LockedDoorFrame;
+	public Sprite doorFrame;
+	public Sprite closedDoor;
+	public Sprite openDoor;
+
 	public class SpriteInfo
 	{
 		public readonly Quaternion rotation;
@@ -78,25 +86,38 @@ public class WallStyle : ScriptableObject
 				MapTile w = microMap[0, 1];
 				MapTile nw = microMap[0, 2];
 
-				if (n == null || n.tileType == TileType.Wall)
+				if (n != null)
 				{
-					spriteInfos.Add(new SpriteInfo(Quaternion.Euler(0, 0, rotations[dir]), wall, sortingLayer, 3));
+					if(n.tileType == TileType.Wall)
+					{
+						spriteInfos.Add(new SpriteInfo(Quaternion.Euler(0, 0, rotations[dir]), wall, sortingLayer, 3));
+					}
+					else if (n.tileType == TileType.Door)
+					{
+						spriteInfos.Add(new SpriteInfo(Quaternion.Euler(0, 0, rotations[dir]), wall, sortingLayer, 3));
+						spriteInfos.Add(new SpriteInfo(Quaternion.Euler(0, 0, rotations[dir]), closedDoor, sortingLayer, 4));
+						spriteInfos.Add(new SpriteInfo(Quaternion.Euler(0, 0, rotations[dir]), LockedDoorFrame, sortingLayer, 5));
+					}
 				}
 				//if (n == null || n.tileType == TileType.Wall || ne == null || ne.tileType == TileType.Wall)
 				{
-					if ((e != null && e.tileType != TileType.Wall))
+					if ((e != null && e.tileType != TileType.Wall && e.tileType != TileType.Door))
 					{
 						spriteInfos.Add(new SpriteInfo(Quaternion.Euler(0, 0, rotations[dir]), rightPiece, sortingLayer, 3));
 					}
 				}
 				//if (n == null || n.tileType == TileType.Wall || nw == null || nw.tileType == TileType.Wall)
 				{
-					if ((w != null && w.tileType != TileType.Wall))
+					if ((w != null && w.tileType != TileType.Wall && w.tileType != TileType.Door))
 					{
 						spriteInfos.Add(new SpriteInfo(Quaternion.Euler(0, 0, rotations[dir]), leftPiece, sortingLayer, 3));
 					}
 				}
 			}
+		}
+		if (spriteInfos.Count > 0)
+		{
+			Debug.Log("sfdgsfdgsdfgsdgf");
 		}
 		return spriteInfos;
 
