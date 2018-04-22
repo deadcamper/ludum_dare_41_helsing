@@ -4,8 +4,8 @@ public class Game : MonoBehaviour
 {
     public GameUI ui;
 
-    public Player player;
-    public TurnManager turns;
+    private Player player;
+    private TurnManager turns;
 
     private bool gameRunning = true;
 
