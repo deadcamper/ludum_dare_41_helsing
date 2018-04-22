@@ -13,6 +13,9 @@ public class Player : TurnTaker, Killable
     private int lastFrameCount = 0;
 
     public Game game;
+
+    public bool forceCamera = true;
+
     public Direction direction;
 
     [System.Serializable]
@@ -54,6 +57,10 @@ public class Player : TurnTaker, Killable
 			gunArmSprite.SetActive(  Inventory.Items.Any(kvp => kvp.Key == ItemType.SilverBullet && kvp.Value > 0));
 		};
 
+        if (game == null)
+        {
+            game = FindObjectOfType<Game>();
+        }
     }
 
     public void PlayClip(string name)
@@ -71,7 +78,10 @@ public class Player : TurnTaker, Killable
 
     private void Update()
     {
-        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, transform.position + (Vector3.back * 20), 0.3f);
+        if (forceCamera)
+        {
+            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, transform.position + (Vector3.back * 20), 0.3f);
+        }
 
         if (MapUnit.CurrentTile != null)
         {
@@ -143,11 +153,14 @@ public class Player : TurnTaker, Killable
                         turnComplete = true;
                     }
                 }
+
+                if (Input.GetKeyUp(KeyCode.Space))
+                {
+                    if (AttemptFireGun())
+                        turnComplete = true;
+                }
             }
             lastFrameCount = Time.frameCount;
-
-            if (Input.GetKeyUp(KeyCode.Space))
-                AttemptFireGun();
 
             if (nextNode != null)
             {

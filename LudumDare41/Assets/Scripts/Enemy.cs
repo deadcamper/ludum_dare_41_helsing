@@ -16,6 +16,8 @@ public class Enemy : TurnTaker, Killable
 	public GameObject liveSprite;
 	public GameObject deadSprite;
 
+    public Direction startingDirection;
+
 	private Direction direction;
     private Player player;
 
@@ -40,6 +42,7 @@ public class Enemy : TurnTaker, Killable
     // Use this for initialization
     void Start()
     {
+        direction = startingDirection;
         currentCountdown = turnCountdown;
 		Dead = false;
 	}
@@ -50,7 +53,6 @@ public class Enemy : TurnTaker, Killable
         {
             transform.position = Vector3.Lerp(transform.position, MapUnit.CurrentTile.transform.position, 0.2f);
         }
-
         transform.rotation = Quaternion.Euler(0,0, Mathf.LerpAngle(transform.rotation.eulerAngles.z, DirectionUtil.GetSpriteRotationForDirection(direction).eulerAngles.z, 0.2f));
     }
 
