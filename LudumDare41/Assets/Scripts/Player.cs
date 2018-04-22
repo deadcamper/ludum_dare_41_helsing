@@ -5,6 +5,19 @@ using UnityEngine;
 
 public class Player : TurnTaker, Killable
 {
+	static Player _instance;
+	public static Player Instance
+	{
+		get
+		{
+			if (_instance == null)
+			{
+				_instance = FindObjectOfType<Player>();
+			}
+			return _instance;
+		}
+	}
+
 	public GameObject liveSprite;
 	public GameObject deadSprite;
 	public GameObject gunArmSprite;
