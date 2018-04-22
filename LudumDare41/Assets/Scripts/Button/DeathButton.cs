@@ -1,13 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class DeathButton : MonoBehaviour
 {
     public Button butt;
-    public Text buttText;
-
-    private int index = -1;
-    private string[] WORD_SOUP = new string[] { "Bloat", "Decompose", "Rot", "Stare", "Do Nothing", "Smell Bad" };
 
 	void Start()
 	{
@@ -16,13 +13,7 @@ public class DeathButton : MonoBehaviour
 
     void OnClick()
     {
-        int nextIndex;
-
-        do {
-            nextIndex = Random.Range(0, WORD_SOUP.Length);
-        } while (index == nextIndex);
-
-        buttText.text = WORD_SOUP[nextIndex];
-        index = nextIndex;
+        Inventory.Load(); // reload your last inventory
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // reload the current scene
     }
 }

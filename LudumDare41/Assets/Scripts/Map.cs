@@ -78,8 +78,8 @@ public class Map : MonoBehaviour
             // remove this so it doesn't keep happening
             mapTile.onArriveAtTile -= OnArrivedAtExit;
 
-            // Win the game!
-            Debug.Log("Win the game!");
+            // Win the level
+            Inventory.Save();
             player.PlayClip("win");
         }
     }

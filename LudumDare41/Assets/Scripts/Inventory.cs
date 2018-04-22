@@ -15,6 +15,20 @@ public class Inventory
 
     public Dictionary<ItemType, int> Items { get; private set; }
 
+    private static Inventory saved;
+    public static void Save()
+    {
+        saved = instance;
+    }
+
+    public static void Load()
+    {
+        if (saved != null) // if we have a saved inventory, load it
+            instance = saved;
+        else
+            instance = null; // just clear it, it will get recreated when we ask for it
+    }
+
     private static Inventory instance;
     public static Inventory GetInstance()
     {
