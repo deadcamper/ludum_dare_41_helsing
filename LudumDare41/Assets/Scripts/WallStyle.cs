@@ -116,10 +116,6 @@ public class WallStyle : ScriptableObject
 				}
 			}
 		}
-		if (spriteInfos.Count > 0)
-		{
-			Debug.Log("sfdgsfdgsdfgsdgf");
-		}
 		return spriteInfos;
 
 	}
