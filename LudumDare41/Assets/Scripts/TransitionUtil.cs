@@ -30,9 +30,26 @@ public static class TransitionUtil
 		if (onFinish != null)
 			onFinish();
 	}
+	public static void RunFadeTo(Color fromColor, Color toColor, float timeTo, Action onFinish)
+	{
+		GameObject gameObject = GameObject.Instantiate(Resources.Load<GameObject>("FullScreenFade"));
+		GameObject.DontDestroyOnLoad(gameObject);
+		FullScreenFade fullScreenFade = gameObject.GetComponent<FullScreenFade>();
+
+		fullScreenFade.image.color = fromColor;
+
+		Action<float> withFadeValue = (lerp) =>
+		{
+			fullScreenFade.image.color = Color.Lerp(fromColor, toColor, lerp);
+		};
+		onFinish += () => GameObject.Destroy(gameObject);
+		fullScreenFade.StartCoroutine(TransitionUtil.TransitionTo(0,1, timeTo, withFadeValue, onFinish));
+	}
+
 	public static void RunFadeToAndBack(Color fromColor, Color toColor, float timeTo, float timeBack, Action onToReached, Action onFinish)
 	{
 		GameObject gameObject = GameObject.Instantiate(Resources.Load<GameObject>("FullScreenFade"));
+		GameObject.DontDestroyOnLoad(gameObject);
 		FullScreenFade fullScreenFade = gameObject.GetComponent<FullScreenFade>();
 
 		fullScreenFade.image.color = fromColor;
@@ -42,6 +59,7 @@ public static class TransitionUtil
 			fullScreenFade.image.color = Color.Lerp(fromColor, toColor, lerp);
 		};
 
+		onFinish += () => GameObject.Destroy(gameObject);
 		fullScreenFade.StartCoroutine(TransitionUtil.TransitionToAndBack(timeTo, timeBack, withFadeValue, onToReached, onFinish));
 	}
 }
