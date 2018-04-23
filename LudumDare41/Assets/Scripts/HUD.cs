@@ -13,6 +13,7 @@ public class HUD : MonoBehaviour
     private List<Image> keyImages = new List<Image>();
 
     public AudioSource audioSource;
+    public bool hidden = false;
 
     private void Awake()
     {
@@ -25,6 +26,7 @@ public class HUD : MonoBehaviour
         HUD hud = FindObjectOfType<HUD>();
         if (hud)
         {
+            hud.hidden = true;
             int childCount = hud.transform.childCount;
             for (int i = 0; i < childCount; ++i)
             {
@@ -38,6 +40,7 @@ public class HUD : MonoBehaviour
         HUD hud = FindObjectOfType<HUD>();
         if (hud)
         {
+            hud.hidden = false;
             int childCount = hud.transform.childCount;
             for (int i = 0; i < childCount; ++i)
             {
@@ -63,7 +66,7 @@ public class HUD : MonoBehaviour
         Inventory.GetInstance().Items.TryGetValue(ItemType.SilverBullet, out val);
         bulletsText.text = val.ToString();
         // only show when you have not zero bullets
-        shootButton.gameObject.SetActive(val > 0);
+        shootButton.gameObject.SetActive(!hidden && val > 0);
     }
 
     private void OnClickShoot()
