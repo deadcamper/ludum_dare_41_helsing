@@ -93,6 +93,11 @@ public class Enemy : TurnTaker, Killable
 
 				animationStartTime = Time.time;
 
+				float distance = (((transform.position - Player.Instance.transform.position).magnitude / MapTile.TILE_SIZE));
+				float turnDuration = Enemy.turnDuration / Mathf.Max(1, distance/2f);
+				if (turnDuration <= 0)
+					turnDuration = .01f;
+
 				if (currentPathTarget.turns > 0)
 					animationEndTime = animationStartTime + turnDuration / currentPathTarget.turns;
 				else
