@@ -197,6 +197,10 @@ public class Player : TurnTaker, Killable
 					GameUI.DisplayMessage("You don't have a key.");
 				}
 			}
+			else if (tile.tileType == TileType.EntryDoor)
+			{
+				GameUI.DisplayMessage("This is too important. You can't go back.");
+			}
 		}
         return complete;
 	}

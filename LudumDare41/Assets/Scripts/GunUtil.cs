@@ -42,9 +42,12 @@ public static class GunUtil
             case TileType.Wall:
                 return true;
 
-            case TileType.Door:
-                return !mapTile.isValid; // you can shoot through open doors only
-        }
+			case TileType.Door:
+				return !mapTile.isValid; // you can shoot through open doors only
+
+			case TileType.EntryDoor:
+				return !mapTile.isValid; // you can shoot through open doors only
+		}
 
         return false;
     }

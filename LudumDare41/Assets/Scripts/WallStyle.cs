@@ -96,7 +96,7 @@ public class WallStyle : ScriptableObject
 					{
 						spriteInfos.Add(new SpriteInfo(Quaternion.Euler(0, 0, rotations[dir]), wall, sortingLayer, 3));
 					}
-					else if (n.tileType == TileType.Door)
+					else if (n.tileType == TileType.Door || n.tileType == TileType.EntryDoor)
 					{
 						spriteInfos.Add(new SpriteInfo(Quaternion.Euler(0, 0, rotations[dir]), wall, sortingLayer, 3));
 
@@ -105,7 +105,14 @@ public class WallStyle : ScriptableObject
                         else
                             spriteInfos.Add(new SpriteInfo(Quaternion.Euler(0, 0, rotations[dir]), openDoor, sortingLayer, 4));
 
-                        spriteInfos.Add(new SpriteInfo(Quaternion.Euler(0, 0, rotations[dir]), LockedDoorFrame, sortingLayer, 5));
+						if (n.tileType == TileType.Door)
+						{
+							spriteInfos.Add(new SpriteInfo(Quaternion.Euler(0, 0, rotations[dir]), LockedDoorFrame, sortingLayer, 5));
+						}
+						else if (n.tileType == TileType.EntryDoor)
+						{
+							spriteInfos.Add(new SpriteInfo(Quaternion.Euler(0, 0, rotations[dir]), doorFrame, sortingLayer, 5));
+						}
 					}
 				}
                 //if (n == null || n.tileType == TileType.Wall || ne == null || ne.tileType == TileType.Wall)

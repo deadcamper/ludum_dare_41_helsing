@@ -9,14 +9,17 @@ public enum TileType
 {
     Floor,
     Wall,
-    Door,
-    Exit
+	Door,
+	EntryDoor,
+	Exit
 }
 
 [ExecuteInEditMode]
 public class MapTile : MonoBehaviour
 {
     public static int TILE_SIZE = 32;
+
+
 
 	SpriteRenderer _spriteRenderer;
 	SpriteRenderer SpriteRenderer
@@ -93,7 +96,7 @@ public class MapTile : MonoBehaviour
             return;
         }
 
-        if (tileType == TileType.Wall || tileType == TileType.Door)
+        if (tileType == TileType.Wall || tileType == TileType.Door || tileType == TileType.EntryDoor)
         {
             SpriteRenderer.sprite = wallStyle.fill;
         }
