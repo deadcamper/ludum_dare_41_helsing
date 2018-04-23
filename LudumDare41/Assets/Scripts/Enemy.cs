@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy : TurnTaker, Killable
 {
-	const float turnDuration = .25f;
+	const float turnDuration = .12f;
 
 	public class PathAnimationEntry
 	{
@@ -39,7 +39,6 @@ public class Enemy : TurnTaker, Killable
 
 	[Range(0,10)]
     public int turnsToTurn = 0;
-
 
 	public Direction startingDirection;
 
@@ -132,8 +131,12 @@ public class Enemy : TurnTaker, Killable
 
 			for (int tilesRemaining = tileCount; tilesRemaining > 0; --tilesRemaining)
 			{
-				// pick a node to move toward
-				MapTile nextTile = PickATile();
+                //Nah, we're good. We found the player
+                if (player.MapUnit.CurrentTile == MapUnit.CurrentTile)
+                    break;
+
+                // pick a node to move toward
+                MapTile nextTile = PickATile();
 
                 // direction
                 if (nextTile != MapUnit.CurrentTile)

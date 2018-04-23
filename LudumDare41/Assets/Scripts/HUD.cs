@@ -9,7 +9,7 @@ public class HUD : MonoBehaviour
 
     private Player player;
     public Image keyImageSource;
-    private Dictionary<ItemType, Image> keyImages = new Dictionary<ItemType, Image>();
+    private List<Image> keyImages = new List<Image>();
 
     public AudioSource audioSource;
 
@@ -71,12 +71,13 @@ public class HUD : MonoBehaviour
                 if (qty > 0)
                 {
                     audioSource.Play();
-                    keyImages.Add(itemType, Instantiate(keyImageSource, transform));
+                    keyImages.Add(Instantiate(keyImageSource, transform));
                 }
                 else
                 {
-                    Destroy(keyImages[itemType].gameObject);
-                    keyImages.Remove(itemType);
+                    Image img = keyImages[keyImages.Count - 1];
+                    Destroy(img.gameObject);
+                    keyImages.RemoveAt(keyImages.Count - 1);
                 }
                 break;
         }
