@@ -62,18 +62,23 @@ public class HUD : MonoBehaviour
         bulletsText.text = val.ToString();
     }
 
-    private void OnItemChange(ItemType itemType, int qty)
+    private void OnItemChange(ItemType itemType, int gainedQty, int totalQty)
     {
         // keys are a special case!
         switch (itemType)
         {
             case ItemType.Key: // TODO as we add other key types, add them here (KeyGreen, KeyBlue, etc)
-                if (qty > 0)
+                if (gainedQty > 0)
                 {
                     audioSource.Play();
+                }
+
+                //Do visual correction for keys!
+                while (totalQty > keyImages.Count)
+                {
                     keyImages.Add(Instantiate(keyImageSource, transform));
                 }
-                else
+                while (totalQty < keyImages.Count)
                 {
                     Image img = keyImages[keyImages.Count - 1];
                     Destroy(img.gameObject);

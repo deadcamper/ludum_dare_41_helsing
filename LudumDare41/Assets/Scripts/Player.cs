@@ -61,7 +61,7 @@ public class Player : TurnTaker, Killable
         MapUnit = new MapUnit(transform.position, this);
         Dead = false;
         Inventory.GetInstance().onItemChange += UpdatePlayerSpritesWithInventory;
-        UpdatePlayerSpritesWithInventory(ItemType.Key, 0); //Force trigger to update player
+        UpdatePlayerSpritesWithInventory(ItemType.Key, 0, 0); //Force trigger to update player, values don't matter
 
         if (game == null)
         {
@@ -69,7 +69,7 @@ public class Player : TurnTaker, Killable
         }
     }
 
-    private void UpdatePlayerSpritesWithInventory(ItemType t, int q)
+    private void UpdatePlayerSpritesWithInventory(ItemType t, int q, int tot)
     {
         if (stakeArmSprite)
             stakeArmSprite.SetActive(Inventory.GetInstance().HasItem(ItemType.MetalStake) || Inventory.GetInstance().HasItem(ItemType.Stake));

@@ -10,7 +10,7 @@ public enum ItemType
 
 public class Inventory
 {
-    public delegate void OnItemChange(ItemType itemType, int qty);
+    public delegate void OnItemChange(ItemType itemType, int qtyDelta, int qtyTotal);
     public event OnItemChange onItemChange;
 
     public Dictionary<ItemType, int> Items { get; private set; }
@@ -23,12 +23,9 @@ public class Inventory
 
     public static void Load()
     {
+        Clear();
+
         Inventory temp = GetInstance();
-        foreach (ItemType itemType in temp.Items.Keys)
-        {
-            temp.onItemChange(itemType, -temp.Items[itemType]);
-        }
-        temp.Items.Clear();
 
         if (saved != null) // if we have a saved inventory, load it
         {
@@ -43,6 +40,16 @@ public class Inventory
         }
     }
 
+    public static void Clear()
+    {
+        Inventory temp = GetInstance();
+        foreach (ItemType itemType in temp.Items.Keys)
+        {
+            temp.onItemChange(itemType, -temp.Items[itemType], 0);
+        }
+        temp.Items.Clear();
+    }
+
     private static Inventory instance;
     public static Inventory GetInstance()
     {
@@ -55,7 +62,7 @@ public class Inventory
         return instance;
     }
 
-    private static void AddStartingItems()
+    public static void AddStartingItems()
     {
         instance.Items.Add(ItemType.Stake, 1);
         instance.Items.Add(ItemType.SilverBullet, 0);
@@ -76,7 +83,7 @@ public class Inventory
         Items[itemType] = owned;
 
         if (onItemChange != null)
-            onItemChange(itemType, qty);
+            onItemChange(itemType, qty, owned);
     }
 
     public bool RemoveItem(ItemType itemType, int qty)
@@ -90,7 +97,7 @@ public class Inventory
         Items[itemType] = owned;
 
         if (onItemChange != null)
-            onItemChange(itemType, -qty);
+            onItemChange(itemType, -qty, owned);
 
         return true;
     }

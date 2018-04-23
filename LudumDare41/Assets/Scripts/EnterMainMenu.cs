@@ -7,6 +7,8 @@ namespace FPG
 		void Start()
 		{
             HUD.Hide();
+            Inventory.Clear();
+            Inventory.AddStartingItems();
         }
 	}
 }
