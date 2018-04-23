@@ -81,8 +81,9 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-  tileType: 3
+  tileType: 4
   isValid: 1
+  wallStyle: {fileID: 0}
 --- !u!212 &212090708259222542
 SpriteRenderer:
   m_ObjectHideFlags: 1
