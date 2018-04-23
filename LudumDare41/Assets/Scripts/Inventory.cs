@@ -23,10 +23,24 @@ public class Inventory
 
     public static void Load()
     {
+        Inventory temp = GetInstance();
+        foreach (ItemType itemType in temp.Items.Keys)
+        {
+            temp.onItemChange(itemType, -temp.Items[itemType]);
+        }
+        temp.Items.Clear();
+
         if (saved != null) // if we have a saved inventory, load it
-            instance = saved;
+        {
+            foreach (ItemType itemType in saved.Items.Keys)
+            {
+                temp.AddItem(itemType, saved.Items[itemType]);
+            }
+        }
         else
-            instance = null; // just clear it, it will get recreated when we ask for it
+        {
+            AddStartingItems();
+        }
     }
 
     private static Inventory instance;
@@ -35,13 +49,18 @@ public class Inventory
         if (instance == null)
         {
             instance = new Inventory();
-            instance.Items.Add(ItemType.Stake, 1);
-            instance.Items.Add(ItemType.SilverBullet, 0);
-            instance.Items.Add(ItemType.Key, 0);
-            instance.Items.Add(ItemType.MetalStake, 0);
+            AddStartingItems();
         }
 
         return instance;
+    }
+
+    private static void AddStartingItems()
+    {
+        instance.Items.Add(ItemType.Stake, 1);
+        instance.Items.Add(ItemType.SilverBullet, 0);
+        instance.Items.Add(ItemType.Key, 0);
+        instance.Items.Add(ItemType.MetalStake, 0);
     }
 
     private Inventory()
