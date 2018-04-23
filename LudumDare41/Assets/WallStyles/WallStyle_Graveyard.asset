@@ -9,14 +9,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2f5aaeaad88b32048a455298b1968571, type: 3}
-  m_Name: Graveyard
+  m_Name: WallStyle_Graveyard
   m_EditorClassIdentifier: 
-  floor: {fileID: 0}
-  fill: {fileID: 0}
-  wall: {fileID: 0}
-  leftPiece: {fileID: 0}
-  rightPiece: {fileID: 0}
-  LockedDoorFrame: {fileID: 0}
-  doorFrame: {fileID: 0}
-  closedDoor: {fileID: 0}
-  openDoor: {fileID: 0}
+  floor: {fileID: 21300000, guid: a4131d2fe9981a14daa4de317cc7b83a, type: 3}
+  fill: {fileID: 21300000, guid: cf0bf6a179f913740861d5ea1380a1e1, type: 3}
+  wall: {fileID: 21300000, guid: c7ab4a21b66f27a4b8e093b7d171569e, type: 3}
+  leftPiece: {fileID: 21300000, guid: 3ca220de4eec3a04a841221ba44087ff, type: 3}
+  rightPiece: {fileID: 21300000, guid: 40b68df153013bc4a9881487a4f41ec2, type: 3}
+  LockedDoorFrame: {fileID: 21300000, guid: faa9bd88cc401d441a5eba2f558e2b25, type: 3}
+  doorFrame: {fileID: 21300000, guid: faa9bd88cc401d441a5eba2f558e2b25, type: 3}
+  closedDoor: {fileID: 21300000, guid: 24153a46ecc7a0f448a496e126f4ad77, type: 3}
+  openDoor: {fileID: 21300000, guid: 6db2a3cd248736d4e9c15af0a122cd87, type: 3}
