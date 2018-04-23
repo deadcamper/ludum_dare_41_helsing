@@ -1,9 +1,10 @@
 ﻿<Properties StartupConfiguration="{A8A30DD4-31DC-9A41-F887-4774CD76B9E9}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/HUD.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/LevelExit.cs">
     <Files>
       <File FileName="Assets/Scripts/SelectableTile.cs" Line="11" Column="24" />
       <File FileName="Assets/Scripts/Player.cs" Line="204" Column="9" />
       <File FileName="Assets/Scripts/HUD.cs" Line="68" Column="52" />
+      <File FileName="Assets/Scripts/LevelExit.cs" Line="13" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

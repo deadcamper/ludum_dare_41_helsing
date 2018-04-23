@@ -10,8 +10,8 @@ public class LevelExit : MonoBehaviour
 		TransitionUtil.RunFadeToAndBack(
 			new Color(0, 0, 0, 0), 
 			new Color(0, 0, 0, 1), 
-			2, 
-            2, 
+			4, 
+            1, 
 			2, 
 			() => { SceneManager.LoadScene(nextScene); }, 
             () => {}
