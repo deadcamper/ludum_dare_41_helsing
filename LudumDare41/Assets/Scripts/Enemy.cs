@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Enemy : TurnTaker, Killable
 {
-	const float turnDuration = .12f;
+    public static bool BYPASS_TURN_DURATION = false;
+	public const float TURN_DURATION = .12f;
 
-	public class PathAnimationEntry
+    public class PathAnimationEntry
 	{
 		public Vector3 goalPosition;
 
@@ -94,7 +95,7 @@ public class Enemy : TurnTaker, Killable
 				animationStartTime = Time.time;
 
 				float distance = (((transform.position - Player.Instance.transform.position).magnitude / MapTile.TILE_SIZE));
-				float turnDuration = Enemy.turnDuration / Mathf.Max(1, distance/2f);
+				float turnDuration = Enemy.TURN_DURATION / Mathf.Max(1, distance/2f);
 				if (turnDuration <= 0)
 					turnDuration = .01f;
 
@@ -153,12 +154,20 @@ public class Enemy : TurnTaker, Killable
                         if (turnsToTurn > 0)
                         {
                             tilesRemaining -= turnsToTurn - 1;
-							pathAnimationQueue.Add(new PathAnimationEntry(MapUnit.CurrentTile, dir, Mathf.Min(tilesRemaining, turnsToTurn)));
+                            if (BYPASS_TURN_DURATION)
+                            {
+                                transform.position = nextTile.transform.position;
+                                pathAnimationQueue.Clear();
+                            }
+                            else
+                            {
+                                pathAnimationQueue.Add(new PathAnimationEntry(MapUnit.CurrentTile, dir, Mathf.Min(tilesRemaining, turnsToTurn)));
+                            }
 							continue;
                         }
                     }
                 }
-
+                
                 pathAnimationQueue.Add(new PathAnimationEntry(nextTile, dir));
 				MapUnit.CurrentTile = nextTile;
 				recentlyVisited.Add(MapUnit.CurrentTile);
@@ -169,7 +178,7 @@ public class Enemy : TurnTaker, Killable
 
         currentCountdown--;
 
-        yield return null;
+        //yield return null;
     }
 
     private Direction GetDirectionBetween(Vector3 pos1, Vector3 pos2)

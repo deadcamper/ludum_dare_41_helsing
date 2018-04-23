@@ -36,11 +36,14 @@ public class TurnManager : MonoBehaviour
             //Work through turn takers.
             foreach (TurnTaker turnTaker in TurnTakers)
             {
-                yield return turnTaker.TurnLogic();
-                do
+                if (turnTaker is Player)
+                    yield return turnTaker.TurnLogic();
+                else
+                    turnTaker.TurnLogic().MoveNext();
+                while (!turnTaker.TurnComplete())
                 {
                     yield return null; // wait for the turn to be done
-                } while (!turnTaker.TurnComplete());
+                }
 
                 EvaluateKills();
             }
@@ -52,6 +55,9 @@ public class TurnManager : MonoBehaviour
                 TurnTakers.Sort(Compare);
                 TurnTakersToQueue.Clear();
             }
+
+            //Clear out dead guys
+            TurnTakers.RemoveAll( tt => !(tt is Player) && (tt is Killable) && (tt as Killable).isDead());
 
             if (TurnTakers.Count <= 0)
             {

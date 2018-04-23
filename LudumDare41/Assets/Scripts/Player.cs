@@ -157,7 +157,8 @@ public class Player : TurnTaker, Killable
             }
             lastFrameCount = Time.frameCount;
 			
-            yield return null;
+            if (!turnComplete)
+                yield return null;
         }
     }
 

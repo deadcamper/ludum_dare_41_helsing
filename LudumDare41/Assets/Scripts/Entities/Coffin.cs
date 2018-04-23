@@ -51,4 +51,17 @@ public class Coffin : MonoBehaviour
 
         isOpen = true;
     }
+
+    public void OpenAllCoffins()
+    {
+        //Used for the final boss
+        Coffin[] coffins = FindObjectsOfType<Coffin>();
+        foreach (Coffin c in coffins)
+        {
+            if (c != null && !c.isOpen)
+            {
+                c.OpenCoffin();
+            }
+        }
+    }
 }

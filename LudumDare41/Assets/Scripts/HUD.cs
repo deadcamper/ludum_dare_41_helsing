@@ -56,7 +56,7 @@ public class HUD : MonoBehaviour
         Inventory.GetInstance().Items.TryGetValue(ItemType.Stake, out val);
 
         Inventory.GetInstance().Items.TryGetValue(ItemType.MetalStake, out metalVal);
-        stakeText.text = (metalVal > 0) ? "METAL" : val.ToString();
+        stakeText.text = (metalVal > 0) ? "infinite" : val.ToString();
 
         Inventory.GetInstance().Items.TryGetValue(ItemType.SilverBullet, out val);
         bulletsText.text = val.ToString();
