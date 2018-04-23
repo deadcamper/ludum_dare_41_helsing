@@ -147,7 +147,7 @@ public class Enemy : TurnTaker, Killable
                 // direction
                 if (nextTile != MapUnit.CurrentTile)
                 {
-                    Direction newDirection = GetDirectionBetween(MapUnit.CurrentTile.transform.position, nextTile.transform.position);
+                    Direction newDirection = DirectionUtil.GetDirectionBetween(MapUnit.CurrentTile.transform.position, nextTile.transform.position);
                     if (newDirection != dir)
                     {
 						dir = newDirection;
@@ -179,32 +179,6 @@ public class Enemy : TurnTaker, Killable
         currentCountdown--;
 
         //yield return null;
-    }
-
-    private Direction GetDirectionBetween(Vector3 pos1, Vector3 pos2)
-    {
-        int diffX = Mathf.RoundToInt(pos1.x - pos2.x);
-        int diffY = Mathf.RoundToInt(pos1.y - pos2.y);
-
-        if (diffX < 0)
-        {
-            return Direction.Right;
-        }
-        else if (diffX > 0)
-        {
-            return Direction.Left;
-        }
-
-        if (diffY < 0)
-        {
-            return Direction.Up;
-        }
-        else if (diffY > 0)
-        {
-            return Direction.Down;
-        }
-
-        return Direction.Up;
     }
 
     private MapTile PickATile()

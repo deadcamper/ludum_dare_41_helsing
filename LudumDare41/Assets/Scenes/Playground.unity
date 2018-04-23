@@ -2536,11 +2536,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4708151252954146, guid: c5cc91a78f27f46b08659f973c85e178, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 285.2
+      value: 288
       objectReference: {fileID: 0}
     - target: {fileID: 4708151252954146, guid: c5cc91a78f27f46b08659f973c85e178, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 120.3
+      value: 128
       objectReference: {fileID: 0}
     - target: {fileID: 4708151252954146, guid: c5cc91a78f27f46b08659f973c85e178, type: 2}
       propertyPath: m_LocalPosition.z
@@ -8701,6 +8701,7 @@ MonoBehaviour:
   deathSound: {fileID: 0}
   liveSprite: {fileID: 0}
   deadSprite: {fileID: 0}
+  turnsToTurn: 0
   startingDirection: 0
   ignoresWalls: 0
 --- !u!1001 &2125894586

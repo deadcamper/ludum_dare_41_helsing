@@ -2,9 +2,12 @@
 
 public class MapUnit
 {
+    public delegate void OnTileChange(MapTile mapTile);
+    public OnTileChange onTileChange;
+
     private MapTile currentTile;
     public MapTile CurrentTile 
-    { 
+    {
         get
         {
             return currentTile;
@@ -20,6 +23,9 @@ public class MapUnit
             }
 
             currentTile.onArriveAtTileUnity.Invoke();
+
+            if (onTileChange != null)
+                onTileChange(currentTile);
         } 
     }
 

@@ -41,6 +41,7 @@ public class Player : TurnTaker, Killable
     public List<AudioLibraryEntry> audioLibrary;
 
     public MapUnit MapUnit { get; private set; }
+    public SelectableTile selectableTileTemplate;
 
     private bool turnComplete = false;
 
@@ -59,6 +60,7 @@ public class Player : TurnTaker, Killable
     private void Awake()
     {
         MapUnit = new MapUnit(transform.position, this);
+        MapUnit.onTileChange += OnCurrentTileSet;
         Dead = false;
         Inventory.GetInstance().onItemChange += UpdatePlayerSpritesWithInventory;
         UpdatePlayerSpritesWithInventory(ItemType.Key, 0, 0); //Force trigger to update player, values don't matter
@@ -66,6 +68,25 @@ public class Player : TurnTaker, Killable
         if (game == null)
         {
             game = FindObjectOfType<Game>();
+        }
+    }
+
+    private void Start()
+    {
+        MapUnit.CurrentTile = MapUnit.CurrentTile;
+    }
+
+    private void OnCurrentTileSet(MapTile mapTile)
+    {
+        SelectableTile[] currentTiles = FindObjectsOfType<SelectableTile>();
+        foreach (SelectableTile cur in currentTiles)
+        {
+            Destroy(cur.gameObject);
+        }
+
+        foreach (MapTile neighbor in MapUnit.CurrentTile.GetNeighbors(false))
+        {
+            Instantiate(selectableTileTemplate, neighbor.transform);
         }
     }
 
@@ -172,6 +193,17 @@ public class Player : TurnTaker, Killable
 			return false;
 		}
 	}
+
+    public bool ProcessTileClick(MapTile tile)
+    {
+        Direction directionOfTile = DirectionUtil.GetDirectionBetween(MapUnit.CurrentTile.transform.position, tile.transform.position);
+        if (ProcessDirectionalInput(directionOfTile))
+        {
+            turnComplete = true;
+        }
+
+        return false;
+    }
 
 	bool TryMoveToTile(MapTile tile)
 	{
