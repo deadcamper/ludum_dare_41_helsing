@@ -21,7 +21,6 @@ public class GameWin : MonoBehaviour
 		SetBlackImageOpacity(0);
 		SetTextOpacity(0);
 
-		DontDestroyOnLoad(gameObject);
 		StartCoroutine(Run());
 	}
 
@@ -36,6 +35,9 @@ public class GameWin : MonoBehaviour
 			yield return null;
 			allEnemiesDead = !FindObjectsOfType<Enemy>().Any(e => !e.isDead());
 		}
+
+		DontDestroyOnLoad(gameObject);
+
 		string nxtScene = nextScene;
 
         yield return new WaitForSeconds(4);
