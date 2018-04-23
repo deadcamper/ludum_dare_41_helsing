@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LevelExit : MonoBehaviour
@@ -14,7 +13,7 @@ public class LevelExit : MonoBehaviour
 			2, 
 			2, 
 			() => { SceneManager.LoadScene(nextScene); }, 
-			() => { Destroy(gameObject); } 
+            () => {}
 			);
     }
 }

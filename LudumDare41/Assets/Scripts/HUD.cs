@@ -70,7 +70,8 @@ public class HUD : MonoBehaviour
             case ItemType.Key: // TODO as we add other key types, add them here (KeyGreen, KeyBlue, etc)
                 if (gainedQty > 0)
                 {
-                    audioSource.Play();
+                    if (audioSource)
+                        audioSource.Play();
                 }
 
                 //Do visual correction for keys!
