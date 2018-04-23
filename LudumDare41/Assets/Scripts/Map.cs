@@ -30,6 +30,9 @@ public class Map : MonoBehaviour
 
 	public void AddMapTile(MapTile mapTile)
 	{
+        MapTile dummy;
+        if (mapTiles.TryGetValue(mapTile.Coordinates, out dummy))
+            Debug.LogWarning("Detected two tiles in same place! " + dummy.name + " and " + mapTile.name);
 		mapTiles[mapTile.Coordinates] = mapTile;
 	}
 
