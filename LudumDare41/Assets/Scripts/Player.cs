@@ -169,17 +169,22 @@ public class Player : TurnTaker, Killable
 
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    if (AttemptFireGun())
-                    {
-                        GunUtil.KillEnemiesInSight(this);
-                        turnComplete = true;
-                    }
+                    AttemptShoot();
                 }
             }
             lastFrameCount = Time.frameCount;
 			
             if (!turnComplete)
                 yield return null;
+        }
+    }
+
+    public void AttemptShoot()
+    {
+        if (AttemptFireGun())
+        {
+            GunUtil.KillEnemiesInSight(this);
+            turnComplete = true;
         }
     }
 

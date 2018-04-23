@@ -6,6 +6,7 @@ public class HUD : MonoBehaviour
 {
     public Text stakeText;
     public Text bulletsText;
+    public Button shootButton;
 
     private Player player;
     public Image keyImageSource;
@@ -16,6 +17,7 @@ public class HUD : MonoBehaviour
     private void Awake()
     {
         Inventory.GetInstance().onItemChange += OnItemChange;
+        shootButton.onClick.AddListener(OnClickShoot);
     }
 
     public static void Hide()
@@ -60,6 +62,13 @@ public class HUD : MonoBehaviour
 
         Inventory.GetInstance().Items.TryGetValue(ItemType.SilverBullet, out val);
         bulletsText.text = val.ToString();
+        // only show when you have not zero bullets
+        shootButton.gameObject.SetActive(val > 0);
+    }
+
+    private void OnClickShoot()
+    {
+        player.AttemptShoot();
     }
 
     private void OnItemChange(ItemType itemType, int gainedQty, int totalQty)
