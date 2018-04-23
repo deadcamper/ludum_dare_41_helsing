@@ -8691,6 +8691,11 @@ Prefab:
       propertyPath: m_Name
       value: Door (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 114840537488381846, guid: 9ac09d73d136046faa1422d85c6d8941,
+        type: 2}
+      propertyPath: tileType
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9ac09d73d136046faa1422d85c6d8941, type: 2}
   m_IsPrefabParent: 0
