@@ -4,9 +4,10 @@ using UnityEngine;
 
 public static class TransitionUtil
 {
-	public static IEnumerator TransitionToAndBack(float timeTo, float timeBack, Action<float> withFadeValue, Action onReachedTo = null, Action onFinish = null)
+    public static IEnumerator TransitionToAndBack(float timeTo, float timeDelay, float timeBack, Action<float> withFadeValue, Action onReachedTo = null, Action onFinish = null)
 	{
 		yield return TransitionTo(0, 1, timeTo, withFadeValue, onReachedTo);
+        yield return TransitionTo(1, 1, timeDelay, withFadeValue, onReachedTo);
 		yield return TransitionTo(1, 0, timeBack, withFadeValue, onFinish);
 	}
 
@@ -46,7 +47,7 @@ public static class TransitionUtil
 		fullScreenFade.StartCoroutine(TransitionUtil.TransitionTo(0,1, timeTo, withFadeValue, onFinish));
 	}
 
-	public static void RunFadeToAndBack(Color fromColor, Color toColor, float timeTo, float timeBack, Action onToReached, Action onFinish)
+    public static void RunFadeToAndBack(Color fromColor, Color toColor, float timeTo, float timeDelay, float timeBack, Action onToReached, Action onFinish)
 	{
 		GameObject gameObject = GameObject.Instantiate(Resources.Load<GameObject>("FullScreenFade"));
 		GameObject.DontDestroyOnLoad(gameObject);
@@ -60,6 +61,6 @@ public static class TransitionUtil
 		};
 
 		onFinish += () => GameObject.Destroy(gameObject);
-		fullScreenFade.StartCoroutine(TransitionUtil.TransitionToAndBack(timeTo, timeBack, withFadeValue, onToReached, onFinish));
+        fullScreenFade.StartCoroutine(TransitionUtil.TransitionToAndBack(timeTo, timeDelay, timeBack, withFadeValue, onToReached, onFinish));
 	}
 }

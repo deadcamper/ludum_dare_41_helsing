@@ -11,6 +11,7 @@ public class LevelExit : MonoBehaviour
 			new Color(0, 0, 0, 0), 
 			new Color(0, 0, 0, 1), 
 			2, 
+            2, 
 			2, 
 			() => { SceneManager.LoadScene(nextScene); }, 
             () => {}
