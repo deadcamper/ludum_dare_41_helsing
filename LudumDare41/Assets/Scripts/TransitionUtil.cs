@@ -6,8 +6,9 @@ public static class TransitionUtil
 {
     public static IEnumerator TransitionToAndBack(float timeTo, float timeDelay, float timeBack, Action<float> withFadeValue, Action onReachedTo = null, Action onFinish = null)
 	{
-		yield return TransitionTo(0, 1, timeTo, withFadeValue, onReachedTo);
-        yield return TransitionTo(1, 1, timeDelay, withFadeValue, onReachedTo);
+		yield return TransitionTo(0, 1, timeTo, withFadeValue);
+        yield return new WaitForSeconds(timeDelay);
+		onReachedTo();
 		yield return TransitionTo(1, 0, timeBack, withFadeValue, onFinish);
 	}
 
