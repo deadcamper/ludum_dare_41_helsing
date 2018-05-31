@@ -39,9 +39,14 @@ public class Map : MonoBehaviour
 	float lastUpdatedMapTileLookup;
 
 #if UNITY_EDITOR
-	[UnityEditor.MenuItem("Rebuild/Rebuild")]
+	[UnityEditor.MenuItem("Rebuild/Rebuild Map")]
 #endif
-	public void ForceRebuildMapInEditor()
+	public static void ForceRebuildMapInEditor()
+	{
+		Map.Instance.ForceRebuildMap();
+	}
+
+	public void ForceRebuildMap()
 	{
 		lastUpdatedMapTileLookup = Time.realtimeSinceStartup;
 		mapTiles.Clear();
@@ -55,20 +60,21 @@ public class Map : MonoBehaviour
 			tile.RegenerateDecorations(this);
 		}
 	}
-	public void RebuildMapInEditor()
+
+	public void OnEditorUpdate()
 	{
 		if (!Application.isPlaying)
 		{
 			if (Time.realtimeSinceStartup - lastUpdatedMapTileLookup > 1)
 			{
-				ForceRebuildMapInEditor();
+				ForceRebuildMap();
 			}
 		}
 	}
 
 	public MapTile GetMapTile(Vector2Int coordinates)
 	{
-		RebuildMapInEditor();
+		OnEditorUpdate();
 
 		MapTile mapTile;
 		if (mapTiles.TryGetValue(coordinates, out mapTile))
@@ -83,8 +89,8 @@ public class Map : MonoBehaviour
     {
 
 #if UNITY_EDITOR
-		UnityEditor.EditorApplication.update -= RebuildMapInEditor;
-		UnityEditor.EditorApplication.update += RebuildMapInEditor;
+		UnityEditor.EditorApplication.update -= OnEditorUpdate;
+		UnityEditor.EditorApplication.update += OnEditorUpdate;
 #endif
 
 		if (Application.isPlaying)
@@ -138,13 +144,13 @@ public class Map : MonoBehaviour
 				SpriteRenderer sr = mapTile.GetComponent<SpriteRenderer>();
 				sr.color = Color.black;
 
-				sr.color += Color.Lerp(Color.white, Color.clear, Vector3.Distance(mapTile.transform.position, player.transform.position) / light_radius);
+				//sr.color += Color.Lerp(Color.white, Color.clear, Vector3.Distance(mapTile.transform.position, player.transform.position) / light_radius);
 
 				if (enemy_light_radius > 0f)
 				{
 					foreach (Enemy enemy in enemies)
 					{
-						sr.color += Color.Lerp(Color.white, Color.clear, Vector3.Distance(mapTile.transform.position, enemy.transform.position) / enemy_light_radius);
+				//		sr.color += Color.Lerp(Color.white, Color.clear, Vector3.Distance(mapTile.transform.position, enemy.transform.position) / enemy_light_radius);
 					}
 				}
 
@@ -177,7 +183,7 @@ public class Map : MonoBehaviour
 	void OnDestroy()
 	{
 #if UNITY_EDITOR
-		UnityEditor.EditorApplication.update -= RebuildMapInEditor;
+		UnityEditor.EditorApplication.update -= OnEditorUpdate;
 #endif
 	}
 }

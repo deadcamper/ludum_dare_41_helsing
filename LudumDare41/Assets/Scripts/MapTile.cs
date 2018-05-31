@@ -15,7 +15,7 @@ public enum TileType
 }
 
 [ExecuteInEditMode]
-public class MapTile : MonoBehaviour
+public class MapTile : MonoBehaviour, IEquatable<MapTile>
 {
     public static int TILE_SIZE = 32;
 
@@ -120,8 +120,27 @@ public class MapTile : MonoBehaviour
 			{
 				AddGeneratedDecoratorSprite(spriteInfo.sprite, spriteInfo.rotation, spriteInfo.sortingLayer, spriteInfo.orderInLayer);
 			}
+			var prefabInfos = wallStyle.GetMeshes(map, Coordinates);
+			foreach (var prefabInfo in prefabInfos)
+			{
+				if (prefabInfo.prefab != null)
+				{
+					AddGeneratedDecoratorPrefab(prefabInfo.prefab, prefabInfo.rotation, prefabInfo.sortingLayer, prefabInfo.orderInLayer);
+				}
+			}
 		}
 	}
+
+	private void AddGeneratedDecoratorPrefab(GameObject prefab, Quaternion rotation, SortingLayer sortingLayer, int orderInLayer)
+	{
+		GameObject newGameObject = Instantiate(prefab);
+		newGameObject.name = "generated";
+		newGameObject.transform.SetParent(GeneratedDecorationsParent);
+		newGameObject.transform.localPosition = Vector3.zero;
+		newGameObject.transform.localScale = Vector3.one;
+		newGameObject.transform.rotation = rotation;
+	}
+
 	private void AddGeneratedDecoratorSprite(Sprite sprite, Quaternion rotation, SortingLayer sortingLayer, int orderInLayer)
 	{
 		GameObject newGameObject =  new GameObject("generated");
@@ -218,5 +237,24 @@ public class MapTile : MonoBehaviour
 		int modY = Mathf.RoundToInt(transform.position.y / 32);
 		transform.position = new Vector3(modX * 32, modY * 32);
 #endif
+	}
+
+	public override bool Equals(object other)
+	{
+		if (other is MapTile)
+		{
+			return Equals((MapTile)other);
+		}
+		return false;
+	}
+
+	public bool Equals(MapTile other)
+	{
+		return Coordinates.Equals(other.Coordinates);
+	}
+
+	public override int GetHashCode()
+	{
+		return Coordinates.GetHashCode();
 	}
 }

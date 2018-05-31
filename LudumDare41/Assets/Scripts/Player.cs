@@ -128,7 +128,7 @@ public class Player : TurnTaker, Killable
     {
         if (forceCamera)
         {
-            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, transform.position + (Vector3.back * 20), 0.3f);
+            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, transform.position + (Vector3.back * 50), 0.3f);
         }
 
         if (MapUnit.CurrentTile != null)

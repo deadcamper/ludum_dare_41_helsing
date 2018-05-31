@@ -27,10 +27,10 @@ public static class DirectionUtil
         switch (direction)
         {
             case Direction.Up:
-                return Quaternion.AngleAxis(180, Vector3.right);
+                return Quaternion.AngleAxis(180, Vector3.forward);
 
             case Direction.Down:
-                return Quaternion.AngleAxis(0, Vector3.right);
+                return Quaternion.AngleAxis(0, Vector3.forward);
 
             case Direction.Left:
                 return Quaternion.AngleAxis(270, Vector3.forward);

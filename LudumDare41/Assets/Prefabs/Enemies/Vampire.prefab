@@ -182,7 +182,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1791543625283012}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 32, y: 0, z: 0}
+  m_LocalPosition: {x: 256.4, y: 349.6, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 1}
   m_Children:
   - {fileID: 4191725190833668}
@@ -283,10 +283,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turnCountdown: 2
   tileCount: 1
+  playerWeight: 1
+  backtrackingWeight: 1.7
   deathSound: {fileID: 82545443289828550}
   liveSprite: {fileID: 1604419619345390}
   deadSprite: {fileID: 1920945509293832}
+  turnsToTurn: 0
   startingDirection: 0
+  ignoresWalls: 0
 --- !u!212 &212015485262535466
 SpriteRenderer:
   m_ObjectHideFlags: 1

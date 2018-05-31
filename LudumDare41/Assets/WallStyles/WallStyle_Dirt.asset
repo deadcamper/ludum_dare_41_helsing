@@ -13,10 +13,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   floor: {fileID: 21300000, guid: eca65db281c4b6f42899670051ceccd2, type: 3}
   fill: {fileID: 21300000, guid: cf0bf6a179f913740861d5ea1380a1e1, type: 3}
-  wall: {fileID: 21300000, guid: c7ab4a21b66f27a4b8e093b7d171569e, type: 3}
-  leftPiece: {fileID: 21300000, guid: 3ca220de4eec3a04a841221ba44087ff, type: 3}
-  rightPiece: {fileID: 21300000, guid: 40b68df153013bc4a9881487a4f41ec2, type: 3}
+  wall: {fileID: 0}
+  leftPiece: {fileID: 0}
+  rightPiece: {fileID: 0}
   LockedDoorFrame: {fileID: 21300000, guid: c5f2e85be949f6c49a09df6b7c274e10, type: 3}
   doorFrame: {fileID: 21300000, guid: faa9bd88cc401d441a5eba2f558e2b25, type: 3}
   closedDoor: {fileID: 21300000, guid: 24153a46ecc7a0f448a496e126f4ad77, type: 3}
   openDoor: {fileID: 21300000, guid: 6db2a3cd248736d4e9c15af0a122cd87, type: 3}
+  floorPrefab: {fileID: 1272501529968352, guid: 8c2baf11baa3acc489639ca61f3afdca,
+    type: 2}
+  fillPrefab: {fileID: 0}
+  wallPrefab: {fileID: 1150973919361910, guid: ad3e6aa47caad8540805787f2e9bea89, type: 2}
+  leftPiecePrefab: {fileID: 0}
+  rightPiecePrefab: {fileID: 0}
+  LockedDoorFramePrefab: {fileID: 0}
+  doorFramePrefab: {fileID: 0}
+  closedDoorPrefab: {fileID: 0}
+  openDoorPrefab: {fileID: 0}

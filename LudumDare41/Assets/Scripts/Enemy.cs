@@ -1,5 +1,8 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.PathFinding;
+using Assets.Scripts.PathFinding.Strategies;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Enemy : TurnTaker, Killable
@@ -59,7 +62,6 @@ public class Enemy : TurnTaker, Killable
 			deadSprite.SetActive(value);
 		}
 	}
-
     void Awake()
     {
         player = FindObjectOfType<Player>();
@@ -178,13 +180,30 @@ public class Enemy : TurnTaker, Killable
 
         currentCountdown--;
 
-        //yield return null;
-    }
+		//yield return null;
+	}
 
+	private AStar<MapTile, Direction>.Evaluator pathFinder = new AStar<MapTile, Direction>.Evaluator(new SimpleAStar());
     private MapTile PickATile()
     {
-        // start by considering our current tile (the current tile may have become the most beneficial tile)
-        float currentMapTileScore = CalculateMapTileScore(MapUnit.CurrentTile, null);
+		AStar<MapTile, Direction>.Path path;
+		if(pathFinder.FindPath(MapUnit.CurrentTile, out path))
+		{
+			MapTile lastMapTile = null;
+			foreach (MapTile mapTile in path.FullPath)
+			{
+				if (lastMapTile != null)
+				{
+					Debug.DrawLine(lastMapTile.transform.position - Vector3.forward, mapTile.transform.position - Vector3.forward,Color.red);
+				}
+				lastMapTile = mapTile;
+			}
+
+			return path.PlannedStates.FirstOrDefault();
+		}
+
+		// start by considering our current tile (the current tile may have become the most beneficial tile)
+		float currentMapTileScore = CalculateMapTileScore(MapUnit.CurrentTile, null);
         MapTile nextTile = MapUnit.CurrentTile;
 
         foreach (Direction tileDirection in DirectionUtil.All)
